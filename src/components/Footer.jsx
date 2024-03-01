@@ -6,11 +6,19 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa";
+import useSWR from "swr";
+import { baseURL } from "@/api/baseURL";
+import fetcherWeb from "@/swr/fetcherWeb";
 
 
 
 
 export default function Footer() {
+    const { data: appData, error: appInfoError } = useSWR(`${baseURL}app-info`, fetcherWeb)
+    console.log(appData);
+
+
+
   return (
     <section className="w-[100%] h-auto bg-gradient-to-br from-[#6c0868] to-[#570253] text-white">
         <div className="w-[90%] mx-auto py-[4rem] flex lg:flex-row flex-col lg:gap-1 gap-4 items-start justify-between">
@@ -72,21 +80,21 @@ export default function Footer() {
                         <FaLocationDot className="mt-1" />
                         <div>
                             <h6 className="font-bold">Address</h6>
-                            data.address
+                            {appData?.data?.address}
                         </div>
                     </li>
                     <li className="flex items-start justify-start gap-3 ">
                         <MdPhoneIphone className="mt-1"  />
                         <div>
                             <h6 className="font-bold">Phone Number</h6>
-                            data.phone_number
+                            {appData?.data?.phone_number}
                         </div>
                         </li>
                     <li className="flex items-start justify-start gap-3 ">
                         <MdOutlineMailOutline className="mt-1" /> 
                         <div>
                             <h6 className="font-bold">Email</h6>
-                            data.email
+                            {appData?.data?.email}
                         </div>
                         </li>
                 </ul>

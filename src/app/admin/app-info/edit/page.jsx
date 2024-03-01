@@ -1,13 +1,26 @@
+"use client";
+import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { BsChevronRight } from 'react-icons/bs';
 import AppInfoEdit from "./components/AppInfoEdit";
+import { tokenAuth } from "@/api/tokenAuth";
+import { tokenRole } from "@/api/tokenRole";
+import { useEffect } from "react";
 
 
 
 
-export default function page({ params: {id}}) {
+export default function page() {
+  const { getAuthToken } = tokenAuth();
+  const { getRoleToken } = tokenRole();
+
+ 
+  if(getRoleToken() >= 3) {
+    redirect('/admin/app-info'); 
+  }
+
 
   return (
     <div>

@@ -33,7 +33,6 @@ export default function AppInfoEdit({ id }) {
         const result = await axiosClientAPI.get(`app-info`, config)
           .then((response) => {
             setData(response.data.data);
-            console.log(response.data.data)
           })
         } catch (error) {
           console.error(`Error: ${error}`)
@@ -42,16 +41,18 @@ export default function AppInfoEdit({ id }) {
 
     /* POST DATA */
     async function postData() {
-      setIsSubmit(false);
+      
       console.log(data);
       try{
         const result = await axiosClientAPI.post(`app-info`, data, config)
           .then((response) => {
-            setIsClicked(false);
             router.push('/admin/app-info')
+            setIsSubmit(false);
+            setIsClicked(false);
           })
         } catch (error) {
           console.error(`Error: ${error}`)
+          setIsSubmit(false);
           setIsClicked(false);
         } 
     }  
@@ -66,8 +67,7 @@ export default function AppInfoEdit({ id }) {
     }, [isSubmit]);
 
   return (
-    <>  
-    { isLoading == true ? <Loader /> : 
+   
       <div>
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
@@ -174,7 +174,6 @@ export default function AppInfoEdit({ id }) {
         </section>
       
       </div>
-    }
-    </>
+
   )
 }

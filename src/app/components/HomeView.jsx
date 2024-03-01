@@ -20,12 +20,12 @@ export default function HomeView() {
                         Simply follow the step-by-step process to set up your campaign, define 
                         the rules, and determine the rewards or incentives you wish to offer.
                     </p>
-                    <div className=''>
-                        <button
+                    <div className='flex'>
+                        <Link href='/register'
                             className='group text-xl flex items-center justify-center gap-2 border rounded-2xl px-12 py-5 bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#570253] text-white '>
                             Register
                             <BsArrowRight className='transition ease-in-out duration-300 group-hover:translate-x-1' />
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

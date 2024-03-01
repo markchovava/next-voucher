@@ -23,7 +23,7 @@ export default function page({ params: {id}}) {
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
                   <Link href='/admin/campaign'>
-                    Campaign</Link>
+                    Campaigns</Link>
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>

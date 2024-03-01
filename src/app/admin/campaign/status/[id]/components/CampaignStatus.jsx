@@ -1,7 +1,6 @@
 "use client"
 import axiosClientAPI from '@/api/axiosClientAPI';
 import { tokenAuth } from '@/api/tokenAuth';
-import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { BsArrowRight } from 'react-icons/bs';
@@ -11,13 +10,10 @@ import { BsArrowRight } from 'react-icons/bs';
 
 export default function CampaignStatus({ id }) {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState({}) 
-    const [company, setCompany] = useState({}) 
     const { getAuthToken } = tokenAuth();
     const [isSubmit, setIsSubmit] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
-    const [price, setPrice] = useState({});
     const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +25,7 @@ export default function CampaignStatus({ id }) {
         setData({...data, [e.target.name]: e.target.value})
     }
 
- 
+    /* GET DATA */
     async function getData() {
         try{
           const result = await axiosClientAPI.get(`campaign/${id}`, config)
@@ -47,38 +43,45 @@ export default function CampaignStatus({ id }) {
         try{
           const result = await axiosClientAPI.post(`campaign/status/${id}`, data, config)
             .then((response) => {
-              router.push(`/admin/campaign/${id}`)
+              router.push(`/admin/campaign/${id}`);
+              setIsClicked(false);
             })
           } catch (error) {
             console.error(`Error: ${error}`)
+            setIsClicked(false);
         }
     }  
 
     useEffect(() => {
         getData();
-        setIsClicked(false)
-        setIsLoading(false);
     }, []);
 
 
     useEffect(() => { 
         isSubmit && postData();
-        setIsClicked(false);
     }, [isSubmit]);
+
+
+    if(!data){
+        return <>
+          <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+              <h6 className='text-2xl'>Loading...</h6>
+          </div>
+        </>
+    }
   
 
 
-  return (
-    <>
-        {isLoading === true ? <Loader /> :
+    return (
         <>
             {/* Title */}
             <div className="w-[100%] flex items-center justify-center flex-col">
                 <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
-                    Edit Campaign</h1>
+                    Edit Campaign Status
+                </h1>
                 <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
             </div>
-           
+            
             {/*  */}
             <section className='mx-auto w-[90%] lg:overflow-hidden overflow-auto pt-[2rem] pb-[3rem] px-[1.5rem]  mb-[4rem] bg-white drop-shadow-lg'>
                 <div className="w-[100%] mb-[2rem] text-5xl font-light flex items-center justify-start">
@@ -102,9 +105,9 @@ export default function CampaignStatus({ id }) {
                                 Completed</option>
                     </select>
                 </div>
-               
+                
             
-             
+                
 
 
                 <div className="w-[100%] flex items-center justify-center gap-4">
@@ -127,9 +130,5 @@ export default function CampaignStatus({ id }) {
         
             </section>
         </> 
-        }
-
-
-    </>
-  )
+    )
 }

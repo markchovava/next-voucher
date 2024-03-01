@@ -1,19 +1,17 @@
-"use client"
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import CampaignList from './components/CampaignList';
-import Link from 'next/link';
-import { BsChevronRight } from 'react-icons/bs';
+import Header from '@/components/Header'
+import React from 'react'
+import Footer from '@/components/Footer'
+import Link from 'next/link'
+import { BsChevronRight } from 'react-icons/bs'
+import LoginVoucherEdit from './components/LoginVoucherEdit'
 
 
 
 
 export default function page() {
-  
   return (
-    <main>
+    <div>
       <Header />
-
       {/* BREADCRUMBS */}
       <section className='w-[100%] bg-slate-100 text-black'>
         <div className='mx-auto w-[90%]'>
@@ -24,16 +22,16 @@ export default function page() {
               </li>
               <li><BsChevronRight /></li>
               <li className='flex justify-start items-center'>
-                <Link href='/campaign' className='font-semibold'>
-                  Campaigns</Link>
+                <Link href='/login' className='font-semibold'>
+                  Login</Link>
               </li>
             </ul>
         </div>
       </section>
-        
-      <CampaignList />
+      
+      <LoginVoucherEdit />
 
       <Footer />
-    </main>
-  );
+    </div>
+  )
 }

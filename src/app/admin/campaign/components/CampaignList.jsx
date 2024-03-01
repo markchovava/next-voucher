@@ -146,20 +146,24 @@ export default function CampaignList() {
           <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
               {/* ROW */}
               <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                    <div className="w-[30%] p-3 ">NAME</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">DATE</div>
+                    <div className="w-[20%] p-3 ">NAME</div>
+                    <div className="w-[20%] p-3 border-l border-slate-300">COMPANY</div>
+                    <div className="w-[15%] p-3 border-l border-slate-300">DURATION</div>
                     <div className="w-[15%] p-3 border-l border-slate-300">STATUS</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">AUTHOR</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">ACTION</div>
+                    <div className="w-[15%] p-3 border-l border-slate-300">AUTHOR</div>
+                    <div className="w-[15%] p-3 border-l border-slate-300">ACTION</div>
               </div>
 
               { data.length > 0 ?
                 data.map((item, i) => (
                   <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border border-slate-200 ">
-                        <div className="w-[30%] p-3 ">{item.name}</div>
+                        <div className="w-[20%] p-3 ">{item.name}</div>
+                        <div className="w-[20%] p-3 border-l border-slate-300">
+                          {item.company_name}
+                        </div>
                         <div className="w-[15%] p-3 border-l border-slate-300">
                           {item.start_date} - {item.end_date}
-                          </div>
+                        </div>
                         <div className="w-[15%] p-3 border-l border-slate-300"> 
                           <span className={`${item.status === 'Processing' && 'bg-green-700'}
                             ${item.status === 'Active' && 'bg-pink-600'}
@@ -167,8 +171,10 @@ export default function CampaignList() {
                             {item.status}
                             </span>
                         </div>
-                        <div className="w-[20%] p-3 border-l border-slate-300"> {item.user?.name ? item.user?.name : item.user?.email}</div>
-                        <div className="w-[20%] p-3 border-l border-slate-300 flex justify-start items-center gap-3 text-xl">
+                        <div className="w-[15%] p-3 border-l border-slate-300"> 
+                          {item.user?.name ? item.user?.name : item.user?.email}
+                        </div>
+                        <div className="w-[15%] p-3 border-l border-slate-300 flex justify-start items-center gap-3 text-xl">
                             <Link href={`/admin/campaign/${item.id}`}> 
                                 <FaEye className='hover:text-blue-500 duration-150 hover:scale-110 transition-all ease-in'/> 
                             </Link>

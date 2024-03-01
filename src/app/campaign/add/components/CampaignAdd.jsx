@@ -10,7 +10,7 @@ import { BsArrowRight } from 'react-icons/bs';
 
 
 
-export default function CampaignAdd({ id }) {
+export default function CampaignAdd() {
     const router = useRouter();
     const [data, setData] = useState({}) 
     const [isSubmit, setIsSubmit] = useState(false);
@@ -67,9 +67,11 @@ export default function CampaignAdd({ id }) {
           const result = await axiosClientAPI.post(`campaign`, formData, config)
             .then((response) => {
               router.push('/campaign')
+              setIsClicked(false);
             })
           } catch (error) {
             console.error(`Error: ${error}`)
+            setIsClicked(false);
         }
     }  
 
@@ -85,7 +87,6 @@ export default function CampaignAdd({ id }) {
 
     useEffect(() => { 
         isSubmit && postData();
-        setIsClicked(false);
     }, [isSubmit]);
   
 

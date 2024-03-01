@@ -50,7 +50,7 @@ export default function LoginEdit() {
                 setAuthToken(response.data.auth_token);
                 setRoleToken(response.data.role_level);
                 setIdToken(response.data.user_id)
-                router.push('/')
+                router.push('/voucher')
                 setIsClick(false);
               } else if(response.data.message !== ''){
                 setIsError(true);

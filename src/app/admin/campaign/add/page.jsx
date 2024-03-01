@@ -7,7 +7,7 @@ import CampaignAdd from "./components/CampaignAdd";
 
 
 
-export default function page({ params: {id}}) {
+export default function page() {
 
   return (
     <div>
@@ -27,14 +27,14 @@ export default function page({ params: {id}}) {
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
-                  <Link href={`/admin/campaign/edit/${id}`} className='font-semibold'>
-                    Edit Campaign</Link>
+                  <Link href={`/admin/campaign/add`} className='font-semibold'>
+                    Add Campaign</Link>
                 </li>
               </ul>
           </div>
         </section>
         
-        <CampaignAdd id={id} />
+        <CampaignAdd />
 
         <Footer />
     </div>

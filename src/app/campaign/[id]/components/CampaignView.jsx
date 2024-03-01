@@ -1,5 +1,7 @@
 "use client"
+import axiosClientAPI from '@/api/axiosClientAPI';
 import { baseURL } from '@/api/baseURL';
+import { tokenAuth } from '@/api/tokenAuth';
 import axios from 'axios';
 import Link from 'next/link'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
@@ -10,6 +12,40 @@ import { CiSquareRemove } from "react-icons/ci";
 
 export default function CampaignView({ id }) {
     const [data, setData] = useState({});
+    const [isGenerate, setIsGenerate] = useState(false);
+    const [voucherExist, setVoucherExist] = useState()
+    const { getAuthToken } = tokenAuth();
+    const [isMsg, setIsMsg] = useState(false);
+    const [message, setMessage] = useState('')
+
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+    };
+
+    async function generateVouchers() {
+        const formData = {
+            name: data.name,
+            campaign_id: id,
+            vouchers_quantity: data.vouchers_quantity,
+        };
+        console.log(formData);
+        try{
+          const result = await axiosClientAPI.post(`generated-voucher`, formData, config)
+            .then((response) => {
+              setMessage(response.data.message);
+              console.log(response.data);
+              setIsMsg(true);
+              checkVoucher();
+              setIsGenerate(false);
+            })
+          } catch (error) {
+            console.error(`Error: ${error}`)
+            setIsGenerate(false);
+        }   
+    }
 
     async function getData() {
         try{
@@ -23,7 +59,30 @@ export default function CampaignView({ id }) {
           }   
     }
 
-    if(!data){
+    async function checkVoucher() {
+        try{
+          const result = await axiosClientAPI.get(`generated-voucher/exist/${id}`, config)
+            .then((response) => {
+                console.log('VoucherExist')
+                console.log(response.data.data)
+                setVoucherExist(response.data.data);
+            })
+          } catch (error) {
+            console.error(`Error: ${error}`)
+          }   
+    } 
+
+   
+    useLayoutEffect(() => {
+        checkVoucher()
+        getData();
+    }, [])
+
+    useEffect(() => {
+        isGenerate === true && generateVouchers();
+    }, [isGenerate]);
+
+    if(!data && !voucherExist){
         return (
         <>
           <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
@@ -33,12 +92,6 @@ export default function CampaignView({ id }) {
         )
     }
 
-
-    useLayoutEffect(() => {
-        getData();
-    }, [])
-
-   
 
 
   return (
@@ -70,13 +123,41 @@ export default function CampaignView({ id }) {
                 View Campaign</h1>
             <hr className="border-t-4 border-black w-[20%] pb-[3.5rem]" />
         </div>  
-        {/* ROW */}
-        <div className='mx-auto w-[90%] flex justify-end items-center gap-3 pb-[2rem] '>               
-            <Link
-                href={`/campaign/edit/${id}`}
-                className='flex items-center justify-center gap-1 rounded-xl py-[0.8rem] px-[2rem] bg-green-600 text-white border hover:bg-gradient-to-br  hover:from-green-600 hover:to-green-800'>
-                Edit Campaign</Link>
-        </div>
+        {isMsg == true &&
+            <div className="w-[100%] mb-[1.5rem] flex items-center justify-center gap-5 text-green-600">
+                {message} 
+                <CiSquareRemove onClick={() => setIsMsg(false)} />
+            </div>
+        }
+        {/* LINKS */}
+        { getAuthToken() &&
+            <div className='mx-auto w-[90%] flex justify-end items-center gap-3 pb-[2rem] '> 
+                {!voucherExist ? 
+                    <button onClick={ () => { setIsGenerate(true);}}
+                        disabled={isGenerate == true ? true : false}
+                        className=' group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] text-white border bg-[#6c0868] hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a]'>
+                        { isGenerate === true ? 'Processing' : 
+                            <>
+                                Generate Vouchers 
+                                <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
+                            </>
+                        }
+                    
+                    </button> 
+                :
+                    <Link
+                        href={`/campaign/vouchers/${id}`}
+                        className='flex items-center justify-center gap-1 rounded-xl py-[0.8rem] px-[2rem] text-white border bg-[#6c0868] hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a]'>
+                        View Vouchers
+                    </Link>  
+                }
+                <Link
+                    href={`/campaign/edit/${id}`}
+                    className='flex items-center justify-center gap-1 rounded-xl py-[0.8rem] px-[2rem] bg-green-600 text-white border hover:bg-gradient-to-br  hover:from-green-600 hover:to-green-800'>
+                    Edit Campaign</Link>
+            </div>
+        }
+
         {/*  */}
         <section className='mx-auto w-[90%] p-[2rem] mb-[3rem] bg-white drop-shadow-lg'>
             <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
@@ -101,7 +182,7 @@ export default function CampaignView({ id }) {
             <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
                 <label className='w-[20%] gap-3 font-semibold'>Duration:</label>
                 <div className='w-[80%]'>
-                    {`${data.start_date} - ${data.end_date}`}
+                    {`${data?.start_date && data.start_date} - ${data?.end_date && data.end_date}`}
                 </div>
             </div>
             <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
@@ -158,7 +239,7 @@ export default function CampaignView({ id }) {
                     {data.company_email}
                 </div>
             </div>
-            <div className="w-[100%] mb-[2rem] flex items-center justify-start">
+            <div className="w-[100%] mb-[1rem] flex items-center justify-start">
                 <label className='w-[20%] gap-3 font-semibold'>Company Website:</label>
                 <div className='w-[80%]'>
                     {data.company_website}

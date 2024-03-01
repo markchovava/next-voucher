@@ -3,7 +3,8 @@ import axios from "axios";
 
 
 export default async function fetcherWeb(url){
-    try {
+    
+  try {
         const response = await axios.get(url);
         return response.data;
       }  catch (error) {

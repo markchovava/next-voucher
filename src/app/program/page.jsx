@@ -1,15 +1,16 @@
 "use client"
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import CampaignList from './components/CampaignList';
 import Link from 'next/link';
 import { BsChevronRight } from 'react-icons/bs';
+import ProgramList from './components/ProgramList';
 
 
 
 
 export default function page() {
   
+
   return (
     <main>
       <Header />
@@ -24,14 +25,14 @@ export default function page() {
               </li>
               <li><BsChevronRight /></li>
               <li className='flex justify-start items-center'>
-                <Link href='/campaign' className='font-semibold'>
-                  Campaigns</Link>
+                <Link href='/program' className='font-semibold'>
+                  Program List</Link>
               </li>
             </ul>
         </div>
       </section>
         
-      <CampaignList />
+      <ProgramList />
 
       <Footer />
     </main>
