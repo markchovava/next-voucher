@@ -51,7 +51,8 @@ export default function CampaignAdd() {
           end_date: `${data.end_day}/${data.end_month}/${data.end_year}`,
           vouchers_quantity: Number(data.vouchers_quantity),
           points_per_voucher: Number(data.points_per_voucher),
-          total_price: calculateTotal(),
+          price_of_voucher: Number(data.price_of_voucher),
+          total_cost: Number(calculateTotal() * 100),
           /* REWARD */
           reward_name: data.reward_name,
           reward_points: data.reward_points,
@@ -267,6 +268,15 @@ export default function CampaignAdd() {
                     </div>
                 </div>  
             </section>
+            <div className="w-[100%] mb-[2rem]">
+                <h6 className='font-bold pb-1'>Price of Voucher (cents):</h6>
+                <input 
+                    type="number" 
+                    name="price_of_voucher" 
+                    onChange={handleInput}
+                    placeholder="Write your Price per Voucher here..." 
+                    className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
+            </div>
             <section className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[2rem]'>
                 <div className='w-[25%]'>
                     <h6 className='font-bold pb-1'>Vouchers Quantity:</h6>
@@ -291,11 +301,11 @@ export default function CampaignAdd() {
                 <div className='w-[25%] px-[1rem] text-center lg:text-right'>
                     <h6 className='font-bold pb-1'>Cost Price:</h6>
                     <div className="w-[100%] font-bold text-xl py-[1rem]">
-                        ${`${(price.price / 100).toFixed(2)} for ${price.quantity}`}
+                        {price.price ? '$' + (price.price / 100).toFixed(2) : (0).toFixed(2)} for {price.quantity ? price.quantity : 0}
                     </div>
                 </div>
                 <div className='w-[25%] px-[1rem] text-center lg:text-right'>
-                    <h6 className='font-bold pb-1'>Total Price:</h6>
+                    <h6 className='font-bold pb-1'>Total Cost:</h6>
                     <div className="w-[100%] font-bold text-xl py-[1rem] text-blue-800">
                         ${calculateTotal() ? (calculateTotal() / 100).toFixed(2) : (0).toFixed(2)}
                     </div>

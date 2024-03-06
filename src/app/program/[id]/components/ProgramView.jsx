@@ -4,14 +4,18 @@ import { tokenAuth } from '@/api/tokenAuth';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { BsArrowLeft, BsArrowRight, BsChevronRight } from 'react-icons/bs';
+import { CiSquareRemove } from 'react-icons/ci';
 
 
 
 export default function ProgramView({ id }) {
     const [data, setData] = useState({});
+    const [message, setMessage] = useState('');
+    const [redeemData, setRedeemData] = useState(null)
     const [voucher, setVoucher] = useState([]);
-    const [nextURL, setNextURL] = useState()
-    const [prevURL, setPrevURL] = useState()
+    const [nextURL, setNextURL] = useState();
+    const [prevURL, setPrevURL] = useState();
+    const [isClickGenerate, setIsClickGenerate] = useState(false);
     const { getAuthToken } = tokenAuth();
     const config = {
         headers: {
@@ -19,9 +23,8 @@ export default function ProgramView({ id }) {
           'Authorization': `Bearer ${getAuthToken()}`
         }
     };
-
     /* PAGINATION */
-     async function paginationHandler(url) {
+    async function paginationHandler(url) {
         try{
           const result = await axiosClientAPI.get(url, config)
           .then((response) => {
@@ -34,18 +37,31 @@ export default function ProgramView({ id }) {
         }     
     
     }
-
-    async function getData() {
+    /* GET RedeemVoucher DATA */
+    async function getRedeemVoucher(user_id, program_id) {
         try{
-          const result = await axiosClientAPI.get(`program/${id}`, config)
+            const result = await axiosClientAPI.get(`redeem-voucher/check-by-id?user_id=${user_id}&program_id=${program_id}`, config)
             .then((response) => {
-              setData(response.data.data);
+                setRedeemData(response.data.data);
             })
           } catch (error) {
             console.error(`Error: ${error}`)
           }   
     } 
-
+    /* GET DATA */
+    async function getData() {
+        try{
+          const result = await axiosClientAPI.get(`program/${id}`, config)
+            .then((response) => {
+              setData(response.data.data);
+              getRedeemVoucher(response.data.data.user_id, response.data.data.id)
+            })
+          } catch (error) {
+            console.error(`Error: ${error}`)
+          }   
+    } 
+    
+    /* GET VOUCHERS */
     async function getVoucher() {
         try{
           const result = await axiosClientAPI.get(`program-voucher/by-program-user/${id}`, config)
@@ -58,13 +74,38 @@ export default function ProgramView({ id }) {
             console.error(`Error: ${error}`)
           }   
     } 
+     /* POST DATA */
+     async function generateRedeemVoucher() {
+        const formData = {
+            reward_points: Number(data.reward_points),
+            campaign_id: data.campaign_id,
+            program_id: data.id,
+            user_id: data.user_id,
+        }
+        try{
+          const result = await axiosClientAPI.post(`redeem-voucher`, formData, config)
+            .then((response) => {
+                getData()
+                setMessage(response.data.message);
+                setIsClickGenerate(false)
+            })
+          } catch (error) {
+            console.error(`Error: ${error}`)
+            setIsClickGenerate(false)
+        } 
+    } 
+
 
     useEffect(() => { 
         getData();
         getVoucher();
     }, []);
 
-    if(!data && !voucher){
+    useEffect(() => { 
+        isClickGenerate === true && generateRedeemVoucher();
+    }, [isClickGenerate]);
+
+    if(!redeemData && !data.total_points && voucher.length <= 0){
         return (
         <>
           <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
@@ -78,39 +119,41 @@ export default function ProgramView({ id }) {
   return (
    
     <>
-         {/* BREADCRUMBS */}
-        <section className='w-[100%] bg-slate-100 text-black'>
-            <div className='mx-auto w-[90%]'>
-                <ul className='py-2 flex items-center justify-start gap-2'>
-                <li className='flex gap-1 justify-start items-center'>
-                    <Link href='/' className='flex justify-start items-center'>
-                    Home</Link> 
-                </li>
-                <li><BsChevronRight /></li>
-                <li className='flex justify-start items-center'>
-                    <Link href='/program' className='font-semibold'>
-                    Programs </Link>
-                </li>
-                <li><BsChevronRight /></li>
-                <li className='flex justify-start items-center'>
-                    <Link href='/program' className='font-semibold'>
-                    View Program</Link>
-                </li>
-                </ul>
-            </div>
-        </section>
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
                 View Program</h1>
             <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
         </div> 
+        { message !== '' &&
+            <div className="w-[100%] mb-[1.5rem] flex items-center justify-center gap-5 text-green-600">
+                {message} 
+                <CiSquareRemove onClick={() => setMessage('')} />
+            </div>
+        }
         {/* Link */}
-        <div className='mx-auto w-[90%] flex justify-end items-center pb-[2rem] '>
+        <div className='mx-auto w-[90%] flex justify-end items-center gap-2 pb-[2rem] '>
+            { data.total_points >= data.reward_points &&
+                <button
+                    onClick={() => {
+                        setIsClickGenerate(true)
+                    }}
+                    className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-8 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
+                    {isClickGenerate == true ? 'Processing' : 'Get Redeem Voucher'}
+                </button> 
+            }
+            {redeemData === 1 &&
+                <Link
+                    href={`/program/redeem-voucher/${id}`}
+                    className='transition-all duration-150 ease-in rounded-lg px-8 py-4 bg-gradient-to-br from-blue-600 to-cyan-700 text-white hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800 hover:text-white'>
+                    View Redeem Vouchers
+                </Link>
+            }
             <Link
                 href='/program'
-                className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg  px-8 py-3 bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800 hover:text-white'>
-                Program List</Link>
+                className='transition-all duration-150 ease-in rounded-lg  px-8 py-4 bg-gradient-to-br from-green-700 to-cyan-700 text-white border hover:bg-gradient-to-br  hover:from-blue-700 hover:to-green-800 hover:text-white'>
+                Program List
+            </Link>
         </div>
         {/* Program Info */}
         <section className='w-[100%] h-auto pb-[3rem]'>
@@ -119,7 +162,7 @@ export default function ProgramView({ id }) {
                     <h1 className='font-light text-5xl'>Program Info</h1>
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">
-                    <label className='w-[20%] gap-3 font-semibold'>Campaign Name:</label>
+                    <label className='w-[20%] gap-3 font-semibold'>Username:</label>
                     <div className='w-[80%]'>
                         {data.user?.name ? data.user?.name : data.user?.email } </div>
                 </div>
@@ -136,7 +179,7 @@ export default function ProgramView({ id }) {
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">
                     <label className='w-[20%] gap-3 font-semibold'>Duration:</label>
                     <div className='w-[80%]'>
-                        {`${data.start_date} to ${data.end_date}`}
+                        {`${data.start_date ? data.start_date : '--/--/--'} to ${data.end_date ? data.end_date : '--/--/--'}`}
                     </div>
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">

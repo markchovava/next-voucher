@@ -208,6 +208,12 @@ export default function CampaignView({ id }) {
                 </div>
             </div>
             <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
+                <label className='w-[20%] gap-3 font-semibold'>Price of Voucher:</label>
+                <div className='w-[80%] '>
+                    {data.price_of_voucher}
+                </div>
+            </div>
+            <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
                 <label className='w-[20%] gap-3 font-semibold'>Number of Vouchers:</label>
                 <div className='w-[80%]'>
                     {data.vouchers_quantity}
@@ -216,7 +222,7 @@ export default function CampaignView({ id }) {
             <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
                 <label className='w-[20%] gap-3 font-semibold'>Total Cost:</label>
                 <div className='w-[80%]'>
-                    ${data?.total_price}
+                    ${data?.total_cost}
                 </div>
             </div>
             {/* REWARD */}

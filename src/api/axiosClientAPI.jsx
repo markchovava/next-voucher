@@ -12,4 +12,4 @@ const axiosClientAPI = axios.create({
     withXSRFToken: true,
   })
 
-  export default axiosClientAPI
+  export default axiosClientAPI;

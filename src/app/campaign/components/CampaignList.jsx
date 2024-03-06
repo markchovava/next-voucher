@@ -16,7 +16,7 @@ import { FaEye } from 'react-icons/fa'
 export default function CampaignList() {
     const { getRoleToken } = tokenRole();
     const { getAuthToken } = tokenAuth();
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     const [search, setSearch] = useState('');
@@ -91,12 +91,14 @@ export default function CampaignList() {
       getData();
     }, [])
 
-    if(!data){
-      return <>
-        <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
-            <h6 className='text-2xl'>Loading...</h6>
-        </div>
-      </>
+    if(Object.keys(data).length === 0){
+      return (
+        <>
+            <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+                <h6 className='animate-pulse text-2xl'>Loading...</h6>
+            </div>
+        </>
+      )
     }
 
 
@@ -124,7 +126,7 @@ export default function CampaignList() {
                       className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 border text-white bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] '>
                       Search</button>
                 </div>
-                {getAuthToken() && getRoleToken() <= 3 &&
+                {getAuthToken() &&
                   <div>
                       <Link
                         href='/campaign/add'

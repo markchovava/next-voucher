@@ -16,7 +16,7 @@ import useSWR from 'swr';
 
 export default function ProgramList() {
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     const [search, setSearch] = useState('');
@@ -81,8 +81,7 @@ export default function ProgramList() {
           const result = await axiosClientAPI.get(`program/by-user-id`, config)
             .then((response) => {
               setData(response.data.data);
-              console.log('response.data');
-              console.log(response.data);
+              console.log(response.data.data);
               setPrevURL(response.data.links?.prev)
               setNextURL(response.data.links?.next)
             })
@@ -99,12 +98,14 @@ export default function ProgramList() {
       getData();
     }, [])
 
-    if(!data){
-      return <>
-        <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
-            <h6 className='text-2xl'>Loading...</h6>
-        </div>
-      </>
+    if(data.length <= 0 ){
+      return (
+        <>
+            <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+                <h6 className='animate-pulse text-2xl'>Loading...</h6>
+            </div>
+        </>
+      )
     }
 
 
