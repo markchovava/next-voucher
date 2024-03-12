@@ -1,9 +1,7 @@
 "use client";
 
-import { baseURL } from '@/api/baseURL';
+import axiosClientAPI from '@/api/axiosClientAPI';
 import { tokenAuth } from '@/api/tokenAuth';
-import { tokenRole } from '@/api/tokenRole';
-import fetcherWeb from '@/swr/fetcherWeb';
 import axios from 'axios';
 import Link from 'next/link'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
@@ -13,19 +11,26 @@ import { FaEye } from 'react-icons/fa'
 
 
 
-export default function CampaignList() {
-    const { getRoleToken } = tokenRole();
-    const { getAuthToken } = tokenAuth();
-    const [data, setData] = useState({});
+
+export default function RedeemedVoucherList() {
+
+    const [data, setData] = useState(null);
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     const [search, setSearch] = useState('');
     const [searchSubmit, setSearchSubmit] = useState(false);
+    const { getAuthToken } = tokenAuth();
+    const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+    };
     
 
     async function paginationHandler(url) {
       try{
-        const result = await axios.get(url)
+        const result = await axios.get(url, config)
         .then((response) => {
           setData(response.data.data)
           setPrevURL(response.data.links.prev)
@@ -40,7 +45,7 @@ export default function CampaignList() {
     async function searchData() {
       if(search == ''){
           try{
-              const result = await axios.get(`${baseURL}campaign`)
+              const result = await axiosClientAPI.get(`redeem-voucher`, config)
               .then((response) => {
                   setData(response.data.data)
                   setPrevURL(response.data.links.prev)
@@ -54,7 +59,7 @@ export default function CampaignList() {
           }  
       }
           try{
-              const result = await axios.get(`${baseURL}campaign?search=${search}`)
+              const result = await axiosClientAPI.get(`redeem-voucher?search=${search}`, config)
               .then((response) => {
                   setData(response.data.data)
                   console.log(response.data.data)
@@ -71,9 +76,10 @@ export default function CampaignList() {
     /* GET DATA */
     async function getData() {
         try{
-          const result = await axios.get(`${baseURL}campaign`)
+          const result = await axiosClientAPI.get(`redeem-voucher`, config)
             .then((response) => {
               setData(response.data.data);
+              console.log('redeem-voucher');
               console.log(response.data);
               setPrevURL(response.data.links?.prev)
               setNextURL(response.data.links?.next)
@@ -91,14 +97,12 @@ export default function CampaignList() {
       getData();
     }, [])
 
-    if(Object.keys(data).length === 0){
-      return (
-        <>
-            <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
-                <h6 className='animate-pulse text-2xl'>Loading...</h6>
-            </div>
-        </>
-      )
+    if(!data){
+      return <>
+        <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+            <h6 className='text-2xl'>Loading...</h6>
+        </div>
+      </>
     }
 
 
@@ -107,9 +111,8 @@ export default function CampaignList() {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.8rem] pb-[1.5rem] text-center font-black text-[4rem]">
-              My Campaigns
-            </h1>
-            <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
+              Redeem Vouchers List</h1>
+              <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
         </div>
 
          {/* SEARCH */}
@@ -119,33 +122,27 @@ export default function CampaignList() {
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       type='text'
-                      placeholder='Search by name...' 
+                      placeholder='Search by Code...' 
                       className='w-[100%] py-3 px-3 rounded-lg outline-none border border-purple-300' 
                     />
                     <button 
                       onClick={() => setSearchSubmit(true)}
-                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 border text-white bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] '>
+                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
                       Search</button>
                 </div>
-                {getAuthToken() &&
-                  <div>
-                      <Link
-                        href='/campaign/add'
-                        className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
-                        Add Campaign</Link>
-                  </div>
-                }
+
+                <div className='flex items-center justify-end gap-3'>    
+                </div>
+
           </div>
 
           <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
               {/* ROW */}
               <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                    <div className="w-[20%] p-3 ">NAME</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">COMPANY</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">DURATION</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">REWARD</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">R. POINTS</div>
-                    <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
+                    <div className="w-[25%] p-3 ">CODE </div>
+                    <div className="w-[25%] p-3 border-l border-slate-300">STATUS </div>
+                    <div className="w-[25%] p-3 border-l border-slate-300">CAMPAIGN </div>
+                    <div className="w-[25%] p-3 border-l border-slate-300">USER </div>
               </div>
 
               <section className='border border-slate-300'>
@@ -153,20 +150,18 @@ export default function CampaignList() {
                 {data?.length > 0 ?
                   data?.map((item, i) => (
                   <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border-b border-slate-300">
-                    <div className="w-[20%] p-3 ">
-                        {item.name}</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">
-                      {item?.company_name ? item?.company_name : 'Company not added.'}
+                    <div className="w-[25%] p-3 ">
+                        {item.code}</div>
+                    <div className="w-[25%] p-3 border-l border-slate-300">
+                        <span className='bg-green-700 text-white px-2 py-1 rounded-lg'>
+                            {item.status}
+                        </span>
                     </div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">
-                      {`${item.start_date} to ${item.end_date}`}</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">{item.reward_name}</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">{item.reward_points} points</div>
-                    <div className="w-[10%] p-3 border-l border-slate-300">
-                      <Link href={`/campaign/${item.id}`}> 
-                        <FaEye className='text-xl hover:text-blue-500 duration-150 hover:scale-110 transition-all ease-in'/> 
-                      </Link>
+                    <div className="w-[25%] p-3 border-l border-slate-300">
+                        {item?.campaign?.name}
                     </div>
+                    <div className="w-[25%] p-3 border-l border-slate-300">
+                        {item?.user?.name ? item?.user?.name : item?.user?.email}</div>
                   </div>
                   ))
                 :

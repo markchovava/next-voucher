@@ -17,6 +17,7 @@ export default function NavAdmin() {
     const [isProfile, setIsProfile] = useState(false);
     const [ isCampaign, setIsCampaign] = useState(false);
     const [isProgram, setIsProgram] = useState(false);
+    const [ isVoucher, setIsVoucher] = useState(false);
     const {getAuthToken, removeAuthToken} = tokenAuth();
     const { removeRoleToken } = tokenRole();
     const config = {
@@ -55,6 +56,7 @@ export default function NavAdmin() {
                                 setIsUser(false);
                                 setIsProfile(false);
                                 setIsCampaign(false);
+                                setIsVoucher(false);
                                 setIsProgram(false);
                             }}>
                             <span className="cursor-pointer flex items-center justify-start gap-1 hover:text-blue-100">
@@ -93,6 +95,7 @@ export default function NavAdmin() {
                                 setIsUser(!isUser);
                                 setIsProfile(false);
                                 setIsCampaign(false);
+                                setIsVoucher(false);
                                 setIsProgram(false);
                             }}>
                             <span className="cursor-pointer flex items-center justify-start gap-1 hover:text-blue-100">
@@ -130,6 +133,7 @@ export default function NavAdmin() {
                                 setIsSetting(false);
                                 setIsUser(false);
                                 setIsProfile(false);
+                                setIsVoucher(false);
                                 setIsCampaign(!isCampaign);
                                 setIsProgram(false);
                             }}>
@@ -156,13 +160,15 @@ export default function NavAdmin() {
                             }
                         </li>
                         
-                        {/* Claim */}
+                        {/* Program */}
                         <li className="relative"
                             onClick={() => {
                                 setIsSetting(false);
                                 setIsUser(false);
                                 setIsProfile(false);
                                 setIsCampaign(false);
+                                setIsVoucher(false);
+                                setIsVoucher(false);
                                 setIsProgram(!isProgram);
                             }}>
                             <span className="cursor-pointer flex items-center justify-start gap-1 hover:text-blue-100">
@@ -181,6 +187,38 @@ export default function NavAdmin() {
                                         </li>
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
                                             <Link href='/admin/program' className=" w-[100%]">Program List</Link>
+                                        </li>    
+                                    </motion.ul>
+                                </AnimatePresence> 
+                            }
+                        </li>
+                        
+                        {/* Voucher */}
+                        <li className="relative"
+                            onClick={() => {
+                                setIsSetting(false);
+                                setIsUser(false);
+                                setIsProfile(false);
+                                setIsCampaign(false);
+                                setIsProgram(false);
+                                setIsVoucher(!isVoucher);
+                            }}>
+                            <span className="cursor-pointer flex items-center justify-start gap-1 hover:text-blue-100">
+                                Voucher <IoChevronDownSharp />
+                            </span>
+                            { isVoucher && 
+                                <AnimatePresence>
+                                    <motion.ul 
+                                        initial={{ opacity:1 }}
+                                        animate={{ opacity:1 }}
+                                        exit={{ opacity:1 }}
+                                        transition={{ duration: 0.6, type:'spring' }}
+                                        className="top-[125%] left-[-0.5rem] w-[160%] bg-[#570253] absolute z-10">
+                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                            <Link href='/admin/redeemed-voucher' className=" w-[100%]">Redeemed Vouchers</Link>
+                                        </li>
+                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                            <Link href='/admin/claimed-voucher' className=" w-[100%]">Claimed Vouchers</Link>
                                         </li>    
                                     </motion.ul>
                                 </AnimatePresence> 

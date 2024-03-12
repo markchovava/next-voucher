@@ -108,7 +108,7 @@ export default function ProgramView({ id }) {
     if(!redeemData && !data.total_points && voucher.length <= 0){
         return (
         <>
-          <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+          <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
               <h6 className='animate-pulse text-2xl'>Loading...</h6>
           </div>
         </>
@@ -178,8 +178,9 @@ export default function ProgramView({ id }) {
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">
                     <label className='w-[20%] gap-3 font-semibold'>Duration:</label>
-                    <div className='w-[80%]'>
-                        {`${data.start_date ? data.start_date : '--/--/--'} to ${data.end_date ? data.end_date : '--/--/--'}`}
+                    <div className='w-[80%] flex items-center justify-start gap-2'>
+                        <span>{data?.start_date ? data.start_date : '--/--/--'}</span> to 
+                        <span>{data.end_date ? data.end_date : '--/--/--'}</span>
                     </div>
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">

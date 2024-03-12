@@ -64,10 +64,10 @@ export default function ProgramView({ id }) {
         getVoucher();
     }, []);
 
-    if(!data && !voucher){
+    if(!data.total_points && voucher.length <= 0){
         return (
         <>
-          <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+          <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
               <h6 className='animate-pulse text-2xl'>Loading...</h6>
           </div>
         </>
@@ -78,27 +78,6 @@ export default function ProgramView({ id }) {
   return (
    
     <>
-         {/* BREADCRUMBS */}
-        <section className='w-[100%] bg-slate-100 text-black'>
-            <div className='mx-auto w-[90%]'>
-                <ul className='py-2 flex items-center justify-start gap-2'>
-                <li className='flex gap-1 justify-start items-center'>
-                    <Link href='/' className='flex justify-start items-center'>
-                    Home</Link> 
-                </li>
-                <li><BsChevronRight /></li>
-                <li className='flex justify-start items-center'>
-                    <Link href='/program' className='font-semibold'>
-                    Programs </Link>
-                </li>
-                <li><BsChevronRight /></li>
-                <li className='flex justify-start items-center'>
-                    <Link href='/program' className='font-semibold'>
-                    View Program</Link>
-                </li>
-                </ul>
-            </div>
-        </section>
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
@@ -108,8 +87,8 @@ export default function ProgramView({ id }) {
         {/* Link */}
         <div className='mx-auto w-[90%] flex justify-end items-center pb-[2rem] '>
             <Link
-                href='/program'
-                className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg  px-8 py-3 bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800 hover:text-white'>
+                href='/admin/program'
+                className='transition-all duration-150 ease-in rounded-lg px-8 py-4 bg-gradient-to-br from-blue-600 to-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-blue-600 hover:text-white'>
                 Program List</Link>
         </div>
         {/* Program Info */}
@@ -135,8 +114,9 @@ export default function ProgramView({ id }) {
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">
                     <label className='w-[20%] gap-3 font-semibold'>Duration:</label>
-                    <div className='w-[80%]'>
-                        {`${data.start_date} to ${data.end_date}`}
+                    <div className='w-[80%] flex items-center justify-start gap-2'>
+                        <span>{data.start_date ? data.start_date : '--/--/--'}</span> to 
+                        <span>{data.end_date ? data.end_date : '--/--/--'}</span>
                     </div>
                 </div>
                 <div className="w-[100%] mb-[2rem] flex items-center justify-start">

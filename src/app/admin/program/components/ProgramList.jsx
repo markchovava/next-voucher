@@ -81,8 +81,8 @@ export default function ProgramList() {
           const result = await axiosClientAPI.get(`program`, config)
             .then((response) => {
               setData(response.data.data);
-              console.log('response.data');
-              console.log(response.data);
+              console.log('Program');
+              console.log(response.data.data);
               setPrevURL(response.data.links?.prev)
               setNextURL(response.data.links?.next)
             })
@@ -101,7 +101,7 @@ export default function ProgramList() {
 
     if(!data){
       return <>
-        <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+        <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
             <h6 className='text-2xl'>Loading...</h6>
         </div>
       </>
@@ -118,8 +118,8 @@ export default function ProgramList() {
         </div>
 
          {/* SEARCH */}
-         <div className='mx-auto w-[90%] flex items-center justify-between h-auto pb-[1.2rem]'>
-                <div className='lg:w-[40%] w-[70%] flex items-center justify-start gap-2'>
+         <div className='mx-auto w-[90%] flex lg:flex-row flex-col gap-4 items-center justify-between h-auto pb-[1.2rem]'>
+                <div className='lg:w-[40%] w-[90%] flex items-center justify-start gap-2'>
                     <input 
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -132,7 +132,15 @@ export default function ProgramList() {
                       className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
                       Search</button>
                 </div>
-                <div>
+                <div className='flex lg:flex-row flex-col items-center justify-end gap-3'>
+                    <Link
+                      href='/admin/program/claim-reward'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-blue-600 to-[#6c0868] text-white hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-blue-600 hover:text-white '>
+                      Claim Reward</Link>
+                    <Link
+                      href='/admin/program/points-by-amount'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-cyan-700 to-blue-800 text-white hover:bg-gradient-to-br hover:from-blue-800 hover:to-cyan-700 hover:text-white '>
+                      Points by Amount</Link>
                     <Link
                       href='/admin/voucher'
                       className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
@@ -143,12 +151,12 @@ export default function ProgramList() {
           <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
               {/* ROW */}
               <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                    <div className="w-[20%] p-3 ">CAMPAIGN NAME</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">DURATION</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">POINTS</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">REWARD</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">R. POINTS</div>
-                    <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
+                  <div className="w-[20%] p-3 border-l border-slate-300">CAMPAIGN NAME</div>
+                  <div className="w-[20%] p-3 ">USER NAME</div>
+                  <div className="w-[20%] p-3 border-l border-slate-300">DURATION</div>
+                  <div className="w-[15%] p-3 border-l border-slate-300">CURRENT POINTS</div>
+                  <div className="w-[15%] p-3 border-l border-slate-300">REWARD POINTS</div>
+                  <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
               </div>
 
               <section className='border border-slate-300'>
@@ -156,14 +164,17 @@ export default function ProgramList() {
                 {data?.length > 0 ?
                   data?.map((item, i) => (
                   <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border-b border-slate-300">
-                    <div className="w-[20%] p-3 ">
-                        {item.campaign?.name}</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">
-                      {`${item.start_date} to ${item.end_date}`}</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">
-                      {item?.total_points}
+                    <div className="w-[20%] p-3">
+                      {item?.campaign?.name}
                     </div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">{item.reward_name}</div>
+                    <div className="w-[20%] p-3 border-l border-slate-300">
+                        {item?.user?.name ? item?.user?.name : item?.user?.email}
+                    </div>
+                    <div className="w-[20%] p-3 border-l border-slate-300 flex items-center gap-1 justify-start">
+                        <span>{item.start_date ? item.start_date : '--/--/--'}</span> to 
+                        <span>{item.end_date ? item.end_date : '--/--/--'}</span>
+                    </div>
+                    <div className="w-[15%] p-3 border-l border-slate-300">{item.total_points} points</div>
                     <div className="w-[15%] p-3 border-l border-slate-300">{item.reward_points} points</div>
                     <div className="w-[10%] p-3 border-l border-slate-300">
                       <Link href={`/admin/program/${item.id}`}> 

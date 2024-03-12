@@ -101,7 +101,7 @@ export default function ProgramList() {
     if(data.length <= 0 ){
       return (
         <>
-            <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+            <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
                 <h6 className='animate-pulse text-2xl'>Loading...</h6>
             </div>
         </>
@@ -114,13 +114,13 @@ export default function ProgramList() {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.8rem] pb-[1.5rem] text-center font-black text-[4rem]">
-              Programs List</h1>
+              My Campaign Programs</h1>
               <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
         </div>
 
          {/* SEARCH */}
-         <div className='mx-auto w-[90%] flex items-center justify-between h-auto pb-[1.2rem]'>
-                <div className='lg:w-[40%] w-[70%] flex items-center justify-start gap-2'>
+         <div className='mx-auto w-[90%] flex lg:flex-row flex-col items-center justify-between gap-4 h-auto pb-[1.2rem]'>
+                <div className='lg:w-[40%] w-[90%] flex items-center justify-start gap-2'>
                     <input 
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -133,7 +133,7 @@ export default function ProgramList() {
                       className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
                       Search</button>
                 </div>
-                <div>
+                <div className='flex items-center justify-end gap-3'>
                     <Link
                       href='/voucher'
                       className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
@@ -144,12 +144,12 @@ export default function ProgramList() {
           <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
               {/* ROW */}
               <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                    <div className="w-[20%] p-3 ">CAMPAIGN NAME</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">DURATION</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">POINTS</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">REWARD</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">R. POINTS</div>
-                    <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
+                  <div className="w-[20%] p-3 border-l border-slate-300">CAMPAIGN NAME</div>
+                  <div className="w-[20%] p-3 ">USER NAME</div>
+                  <div className="w-[20%] p-3 border-l border-slate-300">DURATION</div>
+                  <div className="w-[15%] p-3 border-l border-slate-300">CURRENT POINTS</div>
+                  <div className="w-[15%] p-3 border-l border-slate-300">REWARD POINTS</div>
+                  <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
               </div>
 
               <section className='border border-slate-300'>
@@ -157,14 +157,17 @@ export default function ProgramList() {
                 {data?.length > 0 ?
                   data?.map((item, i) => (
                   <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border-b border-slate-300">
-                    <div className="w-[20%] p-3 ">
-                        {item.campaign?.name}</div>
-                    <div className="w-[15%] p-3 border-l border-slate-300">
-                      {`${item.start_date} to ${item.end_date}`}</div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">
-                      {item?.total_points}
+                    <div className="w-[20%] p-3">
+                      {item?.campaign?.name}
                     </div>
-                    <div className="w-[20%] p-3 border-l border-slate-300">{item.reward_name}</div>
+                    <div className="w-[20%] p-3 border-l border-slate-300">
+                        {item?.user?.name ? item?.user?.name : item?.user?.email}
+                    </div>
+                    <div className="w-[20%] p-3 border-l border-slate-300 flex items-center gap-1 justify-start">
+                        <span>{item.start_date ? item.start_date : '--/--/--'}</span> to 
+                        <span>{item.end_date ? item.end_date : '--/--/--'}</span>
+                    </div>
+                    <div className="w-[15%] p-3 border-l border-slate-300">{item.total_points} points</div>
                     <div className="w-[15%] p-3 border-l border-slate-300">{item.reward_points} points</div>
                     <div className="w-[10%] p-3 border-l border-slate-300">
                       <Link href={`/program/${item.id}`}> 

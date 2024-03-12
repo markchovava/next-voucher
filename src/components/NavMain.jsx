@@ -2,11 +2,14 @@
 import Link from 'next/link'
 import NavMainResponsive from './NavMainResponsive';
 import { tokenAuth } from '@/api/tokenAuth';
-
+import { IoChevronDownSharp } from 'react-icons/io5';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 
 export default function NavMain() {
     const { getAuthToken } = tokenAuth();
+    const [isCampaign, setIsCampaign] = useState(false);
 
   return (
     <section className='w-[100%] py-2 bg-gradient-to-br from-[#6c0868] to-[#50014c] text-white'>
@@ -20,19 +23,37 @@ export default function NavMain() {
                 <li><Link href='/about' className="flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
                     ABOUT US</Link>
                 </li>
-                {getAuthToken() &&
-                <>
-                    <li><Link href='/voucher' className="flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
-                        VOUCHERS</Link>
-                    </li>
-                    <li><Link href='/program' className="flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
-                        PROGRAMS</Link>
-                    </li>
-                </>
-                }
-                <li><Link href='/campaign' className="flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
-                    CAMPAIGNS</Link>
-                </li>     
+                <li className='relative'>
+                    <span 
+                        onClick={() => setIsCampaign(!isCampaign)} 
+                        className="cursor-pointer flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
+                        CAMPAIGNS <IoChevronDownSharp />
+                    </span>
+                    {isCampaign == true &&
+                        <AnimatePresence>
+                            <motion.ul 
+                                initial={{ opacity:1 }}
+                                animate={{ opacity:1 }}
+                                exit={{ opacity:1 }}
+                                transition={{ duration: 0.6, type:'spring' }}
+                                className="top-[125%] left-[-0.5rem] w-[200%] bg-[#570253] absolute z-10">
+                                <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                    <Link href='/campaign' className=" w-[100%] h-[100%]">
+                                        CURRENT CAMPAIGNS</Link>
+                                </li>
+                                <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                    <Link href='/voucher' className=" w-[100%]">VOUCHERS</Link>
+                                </li>
+                                <li className="px-[0.5rem] pb-3 pt-1 hover:bg-[#6c0868]">
+                                    <Link href='/program' className=" w-[100%] h-[100%]">PROGRAMS</Link>
+                                </li>
+                                
+                            </motion.ul>
+                        </AnimatePresence>
+                    }
+
+                </li>
+                  
                 <li><Link href='/contact' className="flex items-center justify-center gap-1 hover:border-b border-slate-300 hover:text-slate-100 py-3 transition-all ease-in duration-100">
                     CONTACT US</Link></li>
 
