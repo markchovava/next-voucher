@@ -215,7 +215,7 @@ export default function NavAdmin() {
                                         transition={{ duration: 0.6, type:'spring' }}
                                         className="top-[125%] left-[-0.5rem] w-[160%] bg-[#570253] absolute z-10">
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                            <Link href='/admin/redeemed-voucher' className=" w-[100%]">Redeemed Vouchers</Link>
+                                            <Link href='/admin/redeem-voucher' className=" w-[100%]">Redeem Vouchers</Link>
                                         </li>
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
                                             <Link href='/admin/claimed-voucher' className=" w-[100%]">Claimed Vouchers</Link>

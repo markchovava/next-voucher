@@ -91,7 +91,8 @@ export default function CampaignList() {
       getData();
     }, [])
 
-    if(Object.keys(data).length === 0){
+    //if(Object.keys(data).length === 0){
+    if(!data){
       return (
         <>
             <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">

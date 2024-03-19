@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react";
 import { BsArrowRight, BsChevronRight } from "react-icons/bs"
 import { CiCircleRemove, CiSquareRemove } from "react-icons/ci";
-
+import { useZxing } from "react-zxing";
 
 
 
@@ -18,6 +18,13 @@ export default function Voucher() {
     const [searchInput, setSearchInput] = useState('');
     const [mode, setMode] = useState('Text');
     const [isSearch, setIsSearch] = useState(false);
+    const [isQrScan, setIsQrScan] = useState(true);
+    const { ref } = useZxing({
+        onDecodeResult(result) {
+          setSearchInput(result.getText())
+        },
+        paused: isQrScan
+    });
     const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -108,11 +115,17 @@ export default function Voucher() {
         <div className="w-[100%] mb-[2rem] flex items-center justify-between gap-4">
             <div className='flex items-center justify-start gap-4'>
                 <button 
-                    onClick={() => setMode('QRCode')}
+                    onClick={() => {
+                        setMode('QRCode');
+                        setIsQrScan(!isQrScan);
+                    }}
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-blue-500 to-cyan-700 hover:bg-gradient-to-br hover:from-blue-500 hover:to-cyan-900 transition ease-in-out duration-200'>
                     QR Code</button>
                 <button 
-                    onClick={() => setMode('Text')}
+                    onClick={() => {
+                        setMode('Text');
+                        setIsQrScan(true);
+                    }}
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-violet-500 to-violet-700 hover:bg-gradient-to-br hover:from-violet-500 hover:to-violet-900 transition ease-in-out duration-200'>
                     Text</button>
             </div>
@@ -125,12 +138,20 @@ export default function Voucher() {
             </div>
             
         </div>
+
+        <div className={`${isQrScan == false ? 'w-[100%] mb-[1rem]' : 'hidden' } flex justify-center items-start`}>
+            <div className="w-[30rem] h-[20rem]">
+                <video ref={ref} className="w-[100%] h-[100%] object-cover bg-white drop-shadow-xl"/>
+            </div>
+        </div>
+
         <div className="w-[100%] mb-[2rem]">
             <h6 className='font-bold pb-1 text-lg'>{mode}</h6>
             <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[4rem]'>
                 <input 
                     type="text" 
                     name="code" 
+                    value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="Write your Name here..." 
                     className="lg:w-[80%] w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />

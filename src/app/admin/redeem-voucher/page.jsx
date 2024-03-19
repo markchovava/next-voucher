@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Link from 'next/link';
 import { BsChevronRight } from 'react-icons/bs';
-import RedeemedVoucherList from './components/RedeemedVoucherList';
+import RedeemVoucherList from './components/RedeemVoucherList';
 
 
 
@@ -36,7 +36,7 @@ export default function page() {
         </div>
       </section>
         
-      <RedeemedVoucherList />
+      <RedeemVoucherList />
 
       <Footer />
     </main>

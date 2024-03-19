@@ -6,13 +6,13 @@ import axios from 'axios';
 import Link from 'next/link'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
-import { FaEye } from 'react-icons/fa'
+import { FaDownload } from "react-icons/fa";
 
 
 
 
 
-export default function RedeemedVoucherList() {
+export default function RedeemVoucherList() {
 
     const [data, setData] = useState(null);
     const [nextURL, setNextURL] = useState()
@@ -79,8 +79,6 @@ export default function RedeemedVoucherList() {
           const result = await axiosClientAPI.get(`redeem-voucher`, config)
             .then((response) => {
               setData(response.data.data);
-              console.log('redeem-voucher');
-              console.log(response.data);
               setPrevURL(response.data.links?.prev)
               setNextURL(response.data.links?.next)
             })
@@ -139,10 +137,11 @@ export default function RedeemedVoucherList() {
           <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
               {/* ROW */}
               <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                    <div className="w-[25%] p-3 ">CODE </div>
-                    <div className="w-[25%] p-3 border-l border-slate-300">STATUS </div>
+                    <div className="w-[20%] p-3 ">CODE </div>
+                    <div className="w-[20%] p-3 border-l border-slate-300">STATUS </div>
                     <div className="w-[25%] p-3 border-l border-slate-300">CAMPAIGN </div>
                     <div className="w-[25%] p-3 border-l border-slate-300">USER </div>
+                    <div className="w-[10%] p-3 border-l border-slate-300">ACTION </div>
               </div>
 
               <section className='border border-slate-300'>
@@ -150,9 +149,9 @@ export default function RedeemedVoucherList() {
                 {data?.length > 0 ?
                   data?.map((item, i) => (
                   <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border-b border-slate-300">
-                    <div className="w-[25%] p-3 ">
+                    <div className="w-[20%] p-3 ">
                         {item.code}</div>
-                    <div className="w-[25%] p-3 border-l border-slate-300">
+                    <div className="w-[20%] p-3 border-l border-slate-300">
                         <span className='bg-green-700 text-white px-2 py-1 rounded-lg'>
                             {item.status}
                         </span>
@@ -162,6 +161,11 @@ export default function RedeemedVoucherList() {
                     </div>
                     <div className="w-[25%] p-3 border-l border-slate-300">
                         {item?.user?.name ? item?.user?.name : item?.user?.email}</div>
+                    <div className="w-[10%] p-3 border-l border-slate-300">
+                      <Link href={`/admin/redeem-voucher/${item.id}`}>
+                        <FaDownload className='ease-in-out duration-300 transition-all hover:text-green-600 hover:scale-125' />
+                      </Link>
+                    </div>
                   </div>
                   ))
                 :
