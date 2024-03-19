@@ -20,6 +20,15 @@ export default function page() {
                     Home</Link> 
                 </li>
                 <li><BsChevronRight /></li>
+                <li className='flex gap-1 justify-start items-center'>
+                  <Link href='/' className='flex justify-start items-center'>
+                    Admin</Link> 
+                </li>
+                <li><BsChevronRight /></li>
+                <li className='flex justify-start items-center'>
+                  <Link href='/admin/company' className='font-semibold'>
+                    Claim List</Link>
+                </li>
                 <li className='flex justify-start items-center'>
                   <Link href='/admin/company' className='font-semibold'>
                     Claim List</Link>

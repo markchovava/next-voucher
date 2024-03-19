@@ -25,7 +25,7 @@ export default function page() {
               <li><BsChevronRight /></li>
               <li className='flex justify-start items-center'>
                 <Link href='/campaign' className='font-semibold'>
-                  Campaigns</Link>
+                  Campaign List</Link>
               </li>
             </ul>
         </div>

@@ -23,7 +23,7 @@ export default function page({ params: {id} }) {
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
                   <Link href='/campaign' className='font-semibold'>
-                    Campaign</Link>
+                    Campaign List</Link>
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
@@ -32,7 +32,7 @@ export default function page({ params: {id} }) {
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
-                  <Link href='' className='font-semibold'>
+                  <Link href='/campaign/voucher' className='font-semibold'>
                     Voucher List</Link>
                 </li>
               </ul>

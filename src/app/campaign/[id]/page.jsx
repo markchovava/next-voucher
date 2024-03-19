@@ -31,7 +31,7 @@ export default function page({ params: {id} }) {
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
-                  <Link href={`/campaign/add`} className='font-semibold'>
+                  <Link href={`/campaign/${id}`} className='font-semibold'>
                     View Campaign</Link>
                 </li>
               </ul>

@@ -102,6 +102,7 @@ export default function Voucher() {
             </ul>
         </div>
     </section>
+     
      {/* Title */}
      <div className="w-[100%] flex items-center justify-center flex-col">
         <h1 className="leading-none pt-[2rem] pb-[1.5rem] text-center font-black text-[4rem]">

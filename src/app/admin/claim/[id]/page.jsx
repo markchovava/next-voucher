@@ -20,13 +20,18 @@ export default function page({ params: {id} }) {
                     Home</Link> 
                 </li>
                 <li><BsChevronRight /></li>
+                <li className='flex gap-1 justify-start items-center'>
+                  <Link href='/' className='flex justify-start items-center'>
+                    Admin</Link> 
+                </li>
+                <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
                   <Link href='/admin/claim' className='font-semibold'>
                     Claim List</Link>
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
-                  <Link href='/admin/claim' className='font-semibold'>
+                  <Link href={`/admin/claim/${id}`} className='font-semibold'>
                     View Claim</Link>
                 </li>
               </ul>
