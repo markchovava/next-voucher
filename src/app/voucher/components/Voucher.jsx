@@ -16,7 +16,7 @@ export default function Voucher() {
     const [isSubmit, setIsSubmit] = useState(false);
     const [isMessage, setIsMessage] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const [mode, setMode] = useState('Text');
+    const [mode, setMode] = useState('Voucher Number');
     const [isSearch, setIsSearch] = useState(false);
     const [isQrScan, setIsQrScan] = useState(true);
     const { ref } = useZxing({
@@ -86,27 +86,12 @@ export default function Voucher() {
 
   return (
     <>
-    {/* BREADCRUMBS */}
-    <section className='w-[100%] bg-slate-100 text-black'>
-        <div className='mx-auto w-[90%]'>
-            <ul className='py-2 flex items-center justify-start gap-2'>
-            <li className='flex gap-1 justify-start items-center'>
-                <Link href='/' className='flex justify-start items-center'>
-                Home</Link> 
-            </li>
-            <li><BsChevronRight /></li>
-            <li className='flex justify-start items-center'>
-                <Link href='/voucher' className='font-semibold'>
-                Voucher </Link>
-            </li>
-            </ul>
-        </div>
-    </section>
+   
      
      {/* Title */}
      <div className="w-[100%] flex items-center justify-center flex-col">
         <h1 className="leading-none pt-[2rem] pb-[1.5rem] text-center font-black text-[4rem]">
-            Add Voucher Points</h1>
+            Redeem Voucher</h1>
             <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
     </div> 
 
@@ -115,24 +100,24 @@ export default function Voucher() {
             <div className='flex items-center justify-start gap-4'>
                 <button 
                     onClick={() => {
-                        setMode('QRCode');
+                        setMode('Voucher Number');
                         setIsQrScan(!isQrScan);
                     }}
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-blue-500 to-cyan-700 hover:bg-gradient-to-br hover:from-cyan-700 hover:to-blue-500 transition ease-in-out duration-200'>
-                    QR Code</button>
-                <button 
+                    Scan Voucher</button>
+              {/*   <button 
                     onClick={() => {
                         setMode('Text');
                         setIsQrScan(true);
                     }}
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-cyan-600 to-violet-800 hover:bg-gradient-to-br hover:from-violet-800 hover:to-cyan-600 transition ease-in-out duration-200'>
-                    Text</button>
+                    Text</button> */}
             </div>
             <div className='flex items-center justify-start gap-4'>
                 <Link
-                    href='/program'
+                    href='/campaign-program'
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-[#6c0868] to-purple-800 hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-violet-900 transition ease-in-out duration-200'>
-                    Program List</Link>
+                    My Campaigns</Link>
                 
             </div> 
         </div>
@@ -151,7 +136,7 @@ export default function Voucher() {
                     name="code" 
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Write your Name here..." 
+                    placeholder="Enter Voucher Number here..." 
                     className="lg:w-[80%] w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                 <button 
                      onClick={ () => {
@@ -160,7 +145,7 @@ export default function Voucher() {
                     className='lg:w-[20%] w-[100%] lg:px-[2.5rem] py-[1rem] text-center rounded-xl text-white bg-gradient-to-br from-orange-500 to-red-700 hover:bg-gradient-to-br hover:from-red-500 hover:to-red-800 transition ease-in-out duration-200'>
                     { isSearch === true ? 
                         'Processing' : 
-                        'Search'
+                        'Redeem Points'
                     }
                 </button>
             </div>
@@ -169,8 +154,8 @@ export default function Voucher() {
 
         {data.campaign &&
             <section className="w-[100%] text-lg mb-[2rem] p-[1rem] bg-white drop-shadow-xl">
-                <p className='text-xl font-semibold text-green-600 my-4 text-center'>
-                    The voucher is available. Click the button below to add voucher points.
+                <p className='text-xl text-green-600 my-4 text-center'>
+                    The voucher is available. It has <span className="font-semibold">{data.campaign.points_per_voucher} points.</span> Click the button below to redeem them.
                 </p>
                 <div className='flex items-start justify-start gap-4 mb-2'>
                     <div className='w-[20%]'>Name:</div>
@@ -204,7 +189,7 @@ export default function Voucher() {
                         className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800'>
                         { isSubmit === true ? 'Processing' : 
                             <>
-                            Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
+                            Proceed <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
                             </>
                         }
                     

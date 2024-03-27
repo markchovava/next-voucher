@@ -11,10 +11,9 @@ import { BsArrowRight } from "react-icons/bs";
 
 export default function AppInfoEdit({ id }) {
   const router = useRouter();
-  const { getAuthToken } = tokenAuth()
+  const { getAuthToken } = tokenAuth();
   const [data, setData] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const config = {
     headers: {
@@ -25,10 +24,8 @@ export default function AppInfoEdit({ id }) {
   const handleInput = (e) => {
     setData({...data, [e.target.name]: e.target.value})
   }
-
-
-    /* GET DATA */
-    async function getData() {
+  /* GET DATA */
+  async function getData() {
       try{
         const result = await axiosClientAPI.get(`app-info`, config)
           .then((response) => {
@@ -37,34 +34,53 @@ export default function AppInfoEdit({ id }) {
         } catch (error) {
           console.error(`Error: ${error}`)
         }   
-    } 
+  } 
 
-    /* POST DATA */
-    async function postData() {
-      
-      console.log(data);
+  /* POST DATA */
+  async function postData() {
+      const formData = {
+        name : data?.name ? data?.name : '',
+        description: data?.description ? data?.description : '',
+        address: data?.address ? data?.address : '',
+        phone: data?.phone ? data?.phone : '',
+        email: data?.email ? data?.email : '',
+        website: data?.website ? data?.website : '',
+        whatsapp: data?.whatsapp ? data?.whatsapp : '',
+        facebook: data?.facebook ? data?.facebook : '',
+      }
+
       try{
-        const result = await axiosClientAPI.post(`app-info`, data, config)
+        const result = await axiosClientAPI.post(`app-info`, formData, config)
           .then((response) => {
-            router.push('/admin/app-info')
+            console.log(response.data.data)
+            setData(response.data.data)
             setIsSubmit(false);
-            setIsClicked(false);
+            router.push('/admin/app-info')
           })
-        } catch (error) {
+      } catch (error) {
           console.error(`Error: ${error}`)
           setIsSubmit(false);
-          setIsClicked(false);
-        } 
+      }
+       
     }  
 
     useEffect(() => { 
       getData();
-      setIsLoading(false)
     }, []);
 
     useEffect(() => { 
       isSubmit && postData();
     }, [isSubmit]);
+
+
+    if(!data){
+      return <>
+        <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+            <h6 className='text-2xl'>Loading...</h6>
+        </div>
+      </>
+    }
+
 
   return (
    
@@ -81,7 +97,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="name" 
-                  value={data.name}
+                  value={data?.name}
                   onChange={handleInput}
                   placeholder="Write your Name here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -91,7 +107,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="phone" 
-                  value={data.phone}
+                  value={data?.phone}
                   onChange={handleInput}
                   placeholder="Write your Phone here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -101,7 +117,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="email" 
-                  value={data.email}
+                  value={data?.email}
                   onChange={handleInput}
                   placeholder="Write your Email here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -111,7 +127,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="address" 
-                  value={data.address}
+                  value={data?.address}
                   onChange={handleInput}
                   placeholder="Write your Address here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -121,7 +137,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="website" 
-                  value={data.website}
+                  value={data?.website}
                   onChange={handleInput}
                   placeholder="Write your Website here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -131,7 +147,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="whatsapp" 
-                  value={data.whatsapp}
+                  value={data?.whatsapp}
                   onChange={handleInput}
                   placeholder="Write your WhatsApp here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -141,7 +157,7 @@ export default function AppInfoEdit({ id }) {
               <input 
                   type="text" 
                   name="facebook" 
-                  value={data.facebook}
+                  value={data?.facebook}
                   onChange={handleInput}
                   placeholder="Write your Facebook here..." 
                   className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -151,7 +167,7 @@ export default function AppInfoEdit({ id }) {
               <textarea
                   type="text" 
                   name="description" 
-                  value={data.description}
+                  value={data?.description}
                   onChange={handleInput}
                   placeholder="Write your Description here..." 
                   className="w-[100%] h-[8rem] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300"></textarea>
@@ -160,14 +176,17 @@ export default function AppInfoEdit({ id }) {
           <div className="w-[100%] mb-[2rem] flex items-center justify-center gap-4">
                 <button 
                     onClick={ () => {
-                      setIsClicked(true)
-                      setIsSubmit(true) }}
-                      disabled={isClicked == true ? true : false}
-                    className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800'>
-                    {isClicked === true ? 'Processing' : 
-                    <>
-                      Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
-                    </>}
+                      setIsSubmit(true); }}
+                    className='lg:w-[20%] group transition ease-in-out duration-200 flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] text-white bg-gradient-to-br from-[#6c0868] to-[#50014c] hover:bg-gradient-to-br hover:from-[#50014c] hover:to-[#6c0868]'>
+                    { 
+                      isSubmit === true ? 
+                      'Processing' : 
+                      <>
+                        Submit 
+                        <BsArrowRight 
+                        className='transition ease-in-out duration-200 group-hover:translate-x-1' />
+                      </>
+                    }
                     
                 </button>
           </div>

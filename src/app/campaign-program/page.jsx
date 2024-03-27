@@ -4,12 +4,19 @@ import Header from '@/components/Header';
 import Link from 'next/link';
 import { BsChevronRight } from 'react-icons/bs';
 import ProgramList from './components/ProgramList';
+import { tokenAuth } from '@/api/tokenAuth';
+import { useEffect, useLayoutEffect } from 'react';
+import { redirect } from 'next/navigation';
 
 
 
 
 export default function page() {
-  
+  const { getAuthToken } = tokenAuth();
+
+  useLayoutEffect(() => {
+    !getAuthToken() && redirect('/');
+  }, []);
 
   return (
     <main>
@@ -25,8 +32,8 @@ export default function page() {
               </li>
               <li><BsChevronRight /></li>
               <li className='flex justify-start items-center'>
-                <Link href='/program' className='font-semibold'>
-                  Program List</Link>
+                <Link href='/campaign-program' className='font-semibold'>
+                  My Campaigns</Link>
               </li>
             </ul>
         </div>

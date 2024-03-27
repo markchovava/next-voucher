@@ -31,6 +31,15 @@ export default function ClaimView({ id }) {
     }, []);
 
 
+    if(!data){
+        return <>
+          <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+              <h6 className='text-2xl'>Loading...</h6>
+          </div>
+        </>
+      }
+  
+
 
   return (
     <>

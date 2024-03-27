@@ -15,8 +15,7 @@ import fetcherWeb from "@/swr/fetcherWeb";
 
 export default function Footer() {
     const { data: appData, error: appInfoError } = useSWR(`${baseURL}app-info`, fetcherWeb)
-    console.log(appData);
-
+    console.log(appData)
 
 
   return (
@@ -87,7 +86,7 @@ export default function Footer() {
                         <MdPhoneIphone className="mt-1"  />
                         <div>
                             <h6 className="font-bold">Phone Number</h6>
-                            {appData?.data?.phone_number}
+                            {appData?.data?.phone}
                         </div>
                         </li>
                     <li className="flex items-start justify-start gap-3 ">
@@ -101,7 +100,7 @@ export default function Footer() {
             </div>
         </div>
         <div className="fixed bottom-[5%] right-[5%] z-20">
-            <Link href=''>
+            <Link href={`${appData?.data?.whatsapp}`}>
                 <FaWhatsappSquare className="text-[4rem] text-green-600 border border-white drop-shadow-lg hover:scale-110 transition-all ease-in-out" />
             </Link>
         </div>

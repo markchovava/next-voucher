@@ -120,7 +120,7 @@ export default function ClaimedVoucherList() {
                     />
                     <button 
                       onClick={() => setSearchSubmit(true)}
-                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-gradient-to-br from-[#3d003a] to-[#6c0868] text-white hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a]'>
                       Search</button>
                 </div>
 

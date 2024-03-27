@@ -108,32 +108,41 @@ export default function CampaignList() {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.8rem] pb-[1.5rem] text-center font-black text-[4rem]">
-              My Campaigns
+              All Campaigns
             </h1>
             <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
         </div>
 
          {/* SEARCH */}
-         <div className='mx-auto w-[90%] flex items-center justify-between h-auto pb-[1.2rem]'>
-                <div className='lg:w-[40%] w-[70%] flex items-center justify-start gap-2'>
+         <div className='mx-auto w-[90%] flex lg:flex-row flex-col items-center justify-between gap-4 h-auto pb-[1.2rem]'>
+                <div className='lg:w-[40%] w-[100%] flex items-center justify-start gap-2'>
                     <input 
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       type='text'
                       placeholder='Search by name...' 
-                      className='w-[100%] py-3 px-3 rounded-lg outline-none border border-purple-300' 
+                      className='w-[100%] py-4 px-3 rounded-lg outline-none border border-purple-300' 
                     />
                     <button 
                       onClick={() => setSearchSubmit(true)}
-                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 border text-white bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] '>
+                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 border text-white bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] '>
                       Search</button>
                 </div>
                 {getAuthToken() &&
-                  <div>
-                      <Link
-                        href='/campaign/add'
-                        className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
-                        Add Campaign</Link>
+                  <div className='flex items-center justify-end gap-3'>
+                    <Link
+                      href='/campaign/add'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-blue-600 to-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-blue-600 hover:text-white '>
+                      Add Campaign</Link>
+                    <Link
+                      href='/campaign-program/issue-voucher'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-green-700 to-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-green-700 hover:text-white '>
+                      Issue Voucher</Link>
+                    <Link
+                      href='/voucher'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-[#6c0868] to-[#3d003a] text-white border hover:bg-gradient-to-br  hover:from-[#3d003a] hover:to-[#6c0868] hover:text-white '>
+                      Redeem Voucher</Link>
+
                   </div>
                 }
           </div>

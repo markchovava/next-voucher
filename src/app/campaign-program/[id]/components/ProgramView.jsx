@@ -105,7 +105,7 @@ export default function ProgramView({ id }) {
         isClickGenerate === true && generateRedeemVoucher();
     }, [isClickGenerate]);
 
-    if(!redeemData && !data.total_points && voucher.length <= 0){
+    if(!data.total_points && voucher.length <= 0){
         return (
         <>
           <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
@@ -144,15 +144,15 @@ export default function ProgramView({ id }) {
             }
             {redeemData === 1 &&
                 <Link
-                    href={`/program/redeem-voucher/${id}`}
+                    href={`/campaign-program/redeem-voucher/${id}`}
                     className='transition-all duration-150 ease-in rounded-lg px-8 py-4 bg-gradient-to-br from-blue-600 to-cyan-700 text-white hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800 hover:text-white'>
-                    View Redeem Vouchers
+                    Redeem Vouchers
                 </Link>
             }
             <Link
-                href='/program'
+                href='/campaign-program'
                 className='transition-all duration-150 ease-in rounded-lg  px-8 py-4 bg-gradient-to-br from-green-700 to-cyan-700 text-white border hover:bg-gradient-to-br  hover:from-blue-700 hover:to-green-800 hover:text-white'>
-                Program List
+                My Campaigns
             </Link>
         </div>
         {/* Program Info */}

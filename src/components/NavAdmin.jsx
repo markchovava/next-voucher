@@ -110,18 +110,14 @@ export default function NavAdmin() {
                                         transition={{ duration: 0.6, type:'spring' }}
                                         className="top-[125%] left-[-0.5rem] w-[160%] bg-[#570253] absolute z-10">
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                            <Link href='/admin/app-info' className=" w-[100%]">AppInfo</Link>
+                                            <Link href='/admin/user/add' className=" w-[100%]">Add User</Link>
                                         </li>
                                     
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                            <Link href='/admin/role' className=" w-[100%] h-[100%]">
-                                                Roles</Link>
+                                            <Link href='/admin/user' className=" w-[100%] h-[100%]">
+                                                User List</Link>
                                         </li>
                                     
-                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                            <Link href='/admin/delivery' className=" w-[100%] h-[100%]">Delivery</Link>
-                                        </li>
-                                        
                                     </motion.ul>
                                 </AnimatePresence> 
                             }
@@ -253,15 +249,20 @@ export default function NavAdmin() {
                                         <Link href='/admin/profile/edit' className=" w-[100%]">Edit Profile</Link></li>
                                     <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
                                         <Link href='/admin/profile/password' className=" w-[100%]">Set Password</Link></li>
-                                    <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                        <Link href='/login' className=" w-[100%]">Login</Link></li>
-                                    <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
-                                        <button 
-                                            onClick={() => postLogout() }
-                                            className="text-left w-[100%]">
-                                                Logout
-                                        </button>
-                                    </li>
+                                    {getAuthToken() ? 
+                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                            <button 
+                                                onClick={() => postLogout() }
+                                                className="text-left w-[100%]">
+                                                    Logout
+                                            </button>
+                                        </li>
+                                    :
+                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                            <Link href='/login' className=" w-[100%]">Login</Link>
+                                        </li>
+                                    }
+                                    
                                 </motion.ul>
                             </AnimatePresence> 
                         }            

@@ -98,7 +98,7 @@ export default function ProgramList() {
       getData();
     }, [])
 
-    if(data.length <= 0 ){
+    if(!data){
       return (
         <>
             <div className="w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
@@ -114,30 +114,46 @@ export default function ProgramList() {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.8rem] pb-[1.5rem] text-center font-black text-[4rem]">
-              My Campaign Programs</h1>
+              My Campaigns</h1>
               <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
         </div>
-
+        <div className="w-[100%] flex items-center justify-center pb-[2rem]">
+            <p className="w-[90%] leading-normal text-xl">
+              We understand that not everyone is a coding expert which is why we've designed an intiutive 
+              and user-friendly campaign builder. No coding or technical skills are required. Simply follow 
+              the step-by-step process to set up your campaign, define the rules, and determine the rewards 
+              or incentives you wish to offer.
+            </p>
+        </div>
+ 
          {/* SEARCH */}
          <div className='mx-auto w-[90%] flex lg:flex-row flex-col items-center justify-between gap-4 h-auto pb-[1.2rem]'>
-                <div className='lg:w-[40%] w-[90%] flex items-center justify-start gap-2'>
+                <div className='lg:w-[40%] w-[100%] flex items-center justify-start gap-2'>
                     <input 
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       type='text'
                       placeholder='Search by name...' 
-                      className='w-[100%] py-3 px-3 rounded-lg outline-none border border-purple-300' 
+                      className='w-[100%] py-4 px-3 rounded-lg outline-none border border-purple-300' 
                     />
                     <button 
                       onClick={() => setSearchSubmit(true)}
-                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-3 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
+                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
                       Search</button>
                 </div>
                 <div className='flex items-center justify-end gap-3'>
                     <Link
+                      href='/campaign/add'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-blue-600 to-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-blue-600 hover:text-white '>
+                      Add Campaign</Link>
+                    <Link
+                      href='/campaign-program/issue-voucher'
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-green-700 to-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-green-700 hover:text-white '>
+                      Issue Voucher</Link>
+                    <Link
                       href='/voucher'
-                      className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] hover:text-white '>
-                      Add Voucher Points</Link>
+                      className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-[#6c0868] to-[#3d003a] text-white border hover:bg-gradient-to-br  hover:from-[#3d003a] hover:to-[#6c0868] hover:text-white '>
+                      Redeem Voucher</Link>
                 </div>
           </div>
 
@@ -170,7 +186,7 @@ export default function ProgramList() {
                     <div className="w-[15%] p-3 border-l border-slate-300">{item.total_points} points</div>
                     <div className="w-[15%] p-3 border-l border-slate-300">{item.reward_points} points</div>
                     <div className="w-[10%] p-3 border-l border-slate-300">
-                      <Link href={`/program/${item.id}`}> 
+                      <Link href={`/campaign-program/${item.id}`}> 
                         <FaEye className='text-xl hover:text-blue-500 duration-150 hover:scale-110 transition-all ease-in'/> 
                       </Link>
                     </div>

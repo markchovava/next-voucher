@@ -43,7 +43,7 @@ export default function UserAdd() {
       phone: data.phone,
       email: data.email,
       address: data.address,
-      dob: `${dob.day && dob.month && dob.year ? dob.day + '/' + dob.month + '/' + dob.year : ''}`,
+      dob: `${data.day && data.month && data.year ? data.day + '/' + data.month + '/' + data.year : ''}`,
       id_number: data.id_number,
       gender: data.gender,
       role_level: data.role_level,

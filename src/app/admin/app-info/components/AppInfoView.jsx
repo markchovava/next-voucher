@@ -61,7 +61,7 @@ export default function AppInfoView() {
             <div className='mx-auto w-[90%] flex justify-end items-center pb-[2rem]'>
                 <Link
                     href={`/admin/app-info/edit`}
-                    className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg  px-8 py-3 border text-white bg-[#6c0868] hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-purple-900'>
+                    className='transition-all duration-150 ease-in rounded-lg  px-8 py-3 border text-white bg-gradient-to-br from-[#6c0868] to-[#50014c] hover:bg-gradient-to-br hover:from-[#50014c] hover:to-[#6c0868]'>
                     Edit</Link>
             </div>
         }

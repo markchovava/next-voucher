@@ -32,6 +32,16 @@ export default function RoleView({ id }) {
     }, []);
     
 
+    if(!data){
+      return (
+        <>
+          <div className="w-[50rem] lg:w-[100%] h-[50vh] flex items-center justify-center py-4 border border-slate-200 ">
+              <h6 className='animate-pulse text-2xl'>Loading...</h6>
+          </div>
+        </>
+        )
+    }
+    
 
   return (
    
@@ -40,13 +50,13 @@ export default function RoleView({ id }) {
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
                 View Role</h1>
-            <hr className="border-t-4 border-blue-900 w-[10%] pb-[3.5rem]" />
+            <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
         </div> 
         {/* ROW */}
         <div className='mx-auto w-[90%] flex justify-end items-center pb-[2rem] '>
             <Link
                 href={`/admin/role/edit/${id}`}
-                className='bg-gradient-to-br transition-all duration-150 ease-in rounded-lg  px-8 py-3 bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800 hover:text-white'>
+                className='transition-all duration-150 ease-in rounded-lg  px-8 py-3 bg-gradient-to-br from-[#6c0868] to-[#50014c] text-white border hover:bg-gradient-to-br hover:from-[#50014c] hover:to-[#6c0868]  '>
                 Edit</Link>
         </div>
         {/*  */}

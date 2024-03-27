@@ -22,13 +22,8 @@ export default function page({ params: {id} }) {
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>
-                  <Link href='/program' className='font-semibold'>
-                    Program</Link>
-                </li>
-                <li><BsChevronRight /></li>
-                <li className='flex justify-start items-center'>
-                  <Link href={`/program/${id}`} className='font-semibold'>
-                    View Program</Link>
+                  <Link href='/campaign-program' className='font-semibold'>
+                    My Campaigns</Link>
                 </li>
                 <li><BsChevronRight /></li>
                 <li className='flex justify-start items-center'>

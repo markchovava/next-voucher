@@ -4,7 +4,7 @@ import { tokenAuth } from "@/api/tokenAuth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-
+import { FaDownload } from "react-icons/fa";
 
 
 
@@ -84,8 +84,8 @@ export default function RedeemVoucherList({id}) {
     } 
 
 
-     /* GET DATA */
-     async function getProgram() {
+    /* GET DATA */
+    async function getProgram() {
         try{
           const result = await axiosClientAPI.get(`program/${id}`, config)
             .then((response) => {
@@ -123,7 +123,7 @@ export default function RedeemVoucherList({id}) {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
-                Vouchers List</h1>
+                Redeem Vouchers</h1>
             <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
         </div> 
 
@@ -153,18 +153,19 @@ export default function RedeemVoucherList({id}) {
         <section className="mx-auto w-[90%] lg:overflow-hidden overflow-auto">
             {/* ROW */}
             <div className="w-[50rem] lg:w-[100%] font-bold flex items-center justify-start bg-slate-100 py-3 border border-slate-200 ">
-                <div className="w-[25%] p-3 ">CODE</div>
+                <div className="w-[20%] p-3 ">CODE</div>
                 <div className="w-[25%] p-3 border-l border-slate-300">CAMPAIGN</div>
-                <div className="w-[25%] p-3 border-l border-slate-300">STATUS</div>
+                <div className="w-[20%] p-3 border-l border-slate-300">STATUS</div>
                 <div className="w-[25%] p-3 border-l border-slate-300">OWNER</div>
+                <div className="w-[10%] p-3 border-l border-slate-300">ACTION</div>
             </div>
 
             { data.length > 0 ?
             data.map((item, i) => (
                 <div key={i} className="w-[50rem] lg:w-[100%] flex items-center justify-start py-3 border border-slate-200 ">
-                    <div className="w-[25%] p-3 ">{item.code}</div>
+                    <div className="w-[20%] p-3 ">{item.code}</div>
                     <div className="w-[25%] p-3 border-l border-slate-300">{item.campaign?.name}</div>
-                    <div className="w-[25%] p-3 border-l border-slate-300">
+                    <div className="w-[20%] p-3 border-l border-slate-300">
                         <span className={` 
                                 ${item.status == 'Generated' && 'bg-green-700'} 
                                 ${item.status == 'Used' && 'bg-blue-700'} px-2 py-1 rounded-lg text-white`}>
@@ -172,6 +173,11 @@ export default function RedeemVoucherList({id}) {
                         </span>
                     </div>
                     <div className="w-[25%] p-3 border-l border-slate-300">{item.user.name ? item.user.name : item.user.email}</div>
+                    <div className="w-[10%] p-3 border-l border-slate-300">
+                      <Link href={`/campaign-program/redeem-voucher/view/${item.id}`}>
+                        <FaDownload className='ease-in-out duration-300 transition-all hover:text-green-600 hover:scale-125' />
+                      </Link>
+                    </div>
                     
                 </div>
             ))

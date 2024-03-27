@@ -83,7 +83,7 @@ export default function RoleAdd() {
                     setIsSubmit(true) 
                     setIsClicked(true)
                   }}
-                  className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800'>
+                  className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] bg-gradient-to-br from-[#6c0868] to-[#50014c] text-white hover:bg-gradient-to-br  hover:from-[#50014c] hover:to-[#6c0868]'>
                   {isClicked === true ? 'Processing' : 
                     <>
                       Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />

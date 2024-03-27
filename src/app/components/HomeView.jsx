@@ -37,27 +37,24 @@ export default function HomeView() {
         </section>
 
         {/* RATING */}
-        <section className='w-[100%] h-auto py-[4rem]'>
+        {/* <section className='w-[100%] h-auto py-[4rem]'>
             <div className='mx-auto w-[70%] flex lg:flex-row flex-col justify-center items-center lg:gap-4 gap-6'>
-                {/*  */}
                 <div className='lg:w-[30%] w-[70%] rounded-[2rem] border border-[#6c0868] py-[2rem]'>
                     <h1 className='mx-auto text-center text-6xl font-light mb-[1.4rem] text-[#6c0868]'>30+</h1>
                     <p className='mx-auto text-center text-xl mb-[1rem]'>Number of Creator</p>
                 </div>
-                {/*  */}
                 <div className='lg:w-[30%] w-[70%] rounded-[2rem] border border-[#6c0868] py-[2rem]'>
                     <h1 className='mx-auto text-center text-6xl font-light mb-[1.4rem] text-[#6c0868]'>30+</h1>
                     <p className='mx-auto text-center text-xl mb-[1rem]'>Number of Creator</p>
                 </div>
-                {/*  */}
                 <div className='lg:w-[30%] w-[70%] rounded-[2rem] border border-[#6c0868] py-[2rem]'>
                     <h1 className='mx-auto text-center text-6xl font-light mb-[1.4rem] text-[#6c0868]'>30+</h1>
                     <p className='mx-auto text-center text-xl mb-[1rem]'>Number of Creator</p>
                 </div>
             </div>
-        </section>
-
-        <CampaignSlider />
+        </section> */} 
+        
+        {/* <CampaignSlider /> */}
         
         {/* DESCRIPTION */}
         <section className='w-[100%] lg:h-[30rem] h-auto flex lg:flex-row flex-col items-center justify-start py-[4rem]'>
