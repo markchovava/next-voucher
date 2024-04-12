@@ -145,7 +145,7 @@ export default function ProgramList() {
                     <Link
                       href='/campaign/add'
                       className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-blue-600 to-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-blue-600 hover:text-white '>
-                      Add Campaign</Link>
+                      Create Campaign</Link>
                     <Link
                       href='/campaign-program/issue-voucher'
                       className='transition-all duration-150 ease-in rounded-lg px-7 py-4 bg-gradient-to-br from-green-700 to-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-green-700 hover:text-white '>

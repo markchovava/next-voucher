@@ -122,7 +122,7 @@ export default function ProgramView({ id }) {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
-                View Program</h1>
+                View Campaign</h1>
             <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
         </div> 
         { message !== '' &&

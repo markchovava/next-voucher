@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react";
 import { BsArrowRight, BsChevronRight } from "react-icons/bs"
 import { CiCircleRemove, CiSquareRemove } from "react-icons/ci";
-
+import { useZxing } from "react-zxing";
 
 
 
@@ -17,19 +17,28 @@ export default function ClaimReward() {
     const [isMessage, setIsMessage] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [isSearchResult, setIsSearchResult] = useState(false);
-    const [mode, setMode] = useState('Text');
+    const [mode, setMode] = useState('QRCode');
+    const [isQrScan, setIsQrScan] = useState(true);
     const [isSearch, setIsSearch] = useState(false);
     const config = {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${getAuthToken()}`
-    }}
+    }};
+    
+    const { ref } = useZxing({
+        onDecodeResult(result) {
+          setSearchInput(result.getText())
+        },
+        paused: isQrScan
+    });
+   
 
   
     /* SEARCH DATA */
     async function searchData() {
         try{
-            const result = await axiosClientAPI.get(`redeem-voucher/search?search=${searchInput}`, config)
+            const result = await axiosClientAPI.get(`claimed-voucher?search=${searchInput}`, config)
             .then((response) => {
                 setData(response.data.data);
                 console.log(response.data.data);
@@ -92,7 +101,7 @@ export default function ClaimReward() {
      {/* Title */}
      <div className="w-[100%] flex items-center justify-center flex-col">
         <h1 className="leading-none pt-[2rem] pb-[1.5rem] text-center font-black text-[4rem]">
-            Claim Voucher</h1>
+            Claim Reward</h1>
             <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
     </div> 
 
@@ -100,31 +109,39 @@ export default function ClaimReward() {
         <div className="w-[100%] mb-[2rem] flex items-center justify-between gap-4">
             <div className='flex items-center justify-start gap-4'>
                 <button 
-                    onClick={() => setMode('QRCode')}
+                    onClick={() => {
+                        setMode('QRCode');
+                        setIsQrScan(!isQrScan);
+                    }}
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-blue-600 to-cyan-700 hover:bg-gradient-to-br hover:from-cyan-700 hover:to-blue-600 transition ease-in-out duration-200'>
-                    QR Code</button>
-                <button 
-                    onClick={() => setMode('Text')}
-                    className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-violet-500 to-violet-700 hover:bg-gradient-to-br hover:from-violet-500 hover:to-violet-900 transition ease-in-out duration-200'>
-                    Text</button>
+                    QR Code</button>   
             </div>
             <div className='flex items-center justify-start gap-4'>
                 <Link
-                    href='/admin/program'
+                    href='/admin/campaign'
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-[#6c0868] to-purple-800 hover:bg-gradient-to-br hover:from-purple-800 hover:to-[#6c0868] transition ease-in-out duration-200'>
-                    Program List</Link>
+                    Campaigns</Link>
                 
-            </div>
-            
+            </div> 
         </div>
+
+         {/* QR CODE */}
+         <div className={`${isQrScan == false ? 'w-[100%] mb-[1rem]' : 'hidden' } flex justify-center items-start`}>
+            <div className="w-[30rem] h-[20rem]">
+                <video ref={ref} className="w-[100%] h-[100%] object-cover bg-white drop-shadow-xl"/>
+            </div>
+        </div>
+
+
         <div className="w-[100%] mb-[2rem]">
-            <h6 className='font-bold pb-1 text-lg'>{mode}</h6>
+            <h6 className='font-bold pb-1 text-lg'>Voucher Code</h6>
             <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[4rem]'>
                 <input 
                     type="text" 
                     name="code" 
+                    value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="Write your Name here..." 
+                    placeholder="Enter Claim Voucher here..." 
                     className="lg:w-[80%] w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                 <button 
                      onClick={ () => {
@@ -133,7 +150,7 @@ export default function ClaimReward() {
                     className='lg:w-[20%] w-[100%] lg:px-[2.5rem] py-[1rem] text-center rounded-xl text-white bg-gradient-to-br from-orange-600 to-red-700 hover:bg-gradient-to-br hover:from-red-700 hover:to-orange-600 transition ease-in-out duration-200'>
                     { isSearch === true ? 
                         'Processing' : 
-                        'Search'
+                        'Claim Voucher'
                     }
                 </button>
             </div>

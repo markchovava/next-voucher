@@ -109,7 +109,7 @@ export default function RedeemVoucherList() {
         {/* Title */}
         <div className="w-[100%] flex items-center justify-center flex-col">
             <h1 className="leading-none pt-[1.8rem] pb-[1.5rem] text-center font-black text-[4rem]">
-              Redeem Vouchers List</h1>
+              Available Rewards</h1>
               <hr className="border-t-4 border-black lg:w-[15%] w-[30%] pb-[3.5rem]" />
         </div>
 

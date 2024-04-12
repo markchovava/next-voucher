@@ -9,10 +9,12 @@ import axiosClientAPI from '@/api/axiosClientAPI';
 import { tokenId } from '@/api/tokenId';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { GrClose } from 'react-icons/gr';
+import { useRouter } from 'next/navigation';
 
 
 
 function NavAdminResponsive() {
+    const router = useRouter();
     const [isSetting, setIsSetting] = useState(false);
     const [isUser, setIsUser] = useState(false);
     const [isProfile, setIsProfile] = useState(false);

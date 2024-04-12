@@ -133,12 +133,11 @@ export default function Voucher() {
                 <Link
                     href='/admin/program'
                     className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-[#6c0868] to-purple-800 hover:bg-gradient-to-br hover:from-[#6c0868] hover:to-violet-900 transition ease-in-out duration-200'>
-                    Program List</Link>
-                
-            </div>
-            
+                    Campaign Program List</Link>
+            </div>  
         </div>
 
+        {/* QR CODE */}
         <div className={`${isQrScan == false ? 'w-[100%] mb-[1rem]' : 'hidden' } flex justify-center items-start`}>
             <div className="w-[30rem] h-[20rem]">
                 <video ref={ref} className="w-[100%] h-[100%] object-cover bg-white drop-shadow-xl"/>

@@ -8,10 +8,12 @@ import NavAdminResponsive from './NavAdminResponsive';
 import { tokenAuth } from '@/api/tokenAuth';
 import { tokenRole } from '@/api/tokenRole';
 import axiosClientAPI from '@/api/axiosClientAPI';
+import { useRouter } from 'next/navigation';
 
 
 
 export default function NavAdmin() {
+    const router = useRouter();
     const [isSetting, setIsSetting] = useState(false);
     const [isUser, setIsUser] = useState(false);
     const [isProfile, setIsProfile] = useState(false);
@@ -168,7 +170,7 @@ export default function NavAdmin() {
                                 setIsProgram(!isProgram);
                             }}>
                             <span className="cursor-pointer flex items-center justify-start gap-1 hover:text-blue-100">
-                                Program <IoChevronDownSharp />
+                               Campaign Program <IoChevronDownSharp />
                             </span>
                             { isProgram && 
                                 <AnimatePresence>
@@ -177,12 +179,15 @@ export default function NavAdmin() {
                                         animate={{ opacity:1 }}
                                         exit={{ opacity:1 }}
                                         transition={{ duration: 0.6, type:'spring' }}
-                                        className="top-[125%] left-[-0.5rem] w-[160%] bg-[#570253] absolute z-10">
+                                        className="top-[125%] left-[-0.5rem] w-[130%] bg-[#570253] absolute z-10">
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
                                             <Link href='/admin/program/add' className=" w-[100%]">Add Program</Link>
                                         </li>
                                         <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
                                             <Link href='/admin/program' className=" w-[100%]">Program List</Link>
+                                        </li>    
+                                        <li className="px-[0.5rem] py-1 hover:bg-[#6c0868]">
+                                            <Link href='/admin/program/claim-reward' className=" w-[100%]">Claim Reward</Link>
                                         </li>    
                                     </motion.ul>
                                 </AnimatePresence> 

@@ -1,7 +1,6 @@
 "use client"
 import axiosClientAPI from '@/api/axiosClientAPI';
 import { tokenAuth } from '@/api/tokenAuth';
-import Loader from '@/components/Loader';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
@@ -10,7 +9,6 @@ import React, { useEffect, useState } from 'react'
 export default function ProfileView() {
     const [data, setData] = useState({});
     const { getAuthToken } = tokenAuth();
-    const [isLoading, setIsLoading] = useState(true);
     const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -31,20 +29,18 @@ export default function ProfileView() {
 
     useEffect(() => { 
         getData();
-        setIsLoading(false);
     }, []);
     
 
 
   return (
-    <>
-        { isLoading == true ? <Loader /> :
+ 
         <>
             {/* Title */}
             <div className="w-[100%] flex items-center justify-center flex-col">
                 <h1 className="leading-none pt-[1.5rem] pb-[1.5rem] text-center font-black text-[4rem]">
                     View Profile</h1>
-                <hr className="border-t-4 border-blue-900 w-[10%] pb-[3.5rem]" />
+                <hr className="border-t-4 border-black w-[10%] pb-[3.5rem]" />
             </div> 
             {/* ROW */}
             <div className='mx-auto w-[90%] flex justify-end items-center pb-[2rem] '>
@@ -103,8 +99,7 @@ export default function ProfileView() {
                 </div>
             </section>
         </>
-        }
+       
 
-    </>
   )
 }

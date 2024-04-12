@@ -1,6 +1,9 @@
 "use client"
 import { tokenAuth } from '@/api/tokenAuth';
+import { tokenId } from '@/api/tokenId';
+import { tokenRole } from '@/api/tokenRole';
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
@@ -8,8 +11,8 @@ import { GrClose } from "react-icons/gr";
 
 
 export default function NavMainResponsive() {
-    const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
     const { getAuthToken, removeAuthToken } = tokenAuth();
     const { removeRoleToken } = tokenRole();
     const { removeIdToken } = tokenId();
