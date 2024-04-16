@@ -38,10 +38,17 @@ export default function ClaimReward() {
     /* SEARCH DATA */
     async function searchData() {
         try{
-            const result = await axiosClientAPI.get(`claimed-voucher?search=${searchInput}`, config)
+            const result = await axiosClientAPI.get(`redeem-voucher/voucher-search?search=${searchInput}`, config)
             .then((response) => {
-                setData(response.data.data);
-                console.log(response.data.data);
+                if(response.data.status === 1){
+                    setData(response.data.data);
+                    console.log(response.data.data);
+                    setIsSearchResult(true);
+                } else {
+                    setData(response.data);
+                    console.log(response.data);
+                    setIsSearchResult(true);
+                }
                 setIsSearch(false);
                 
             })
@@ -158,13 +165,13 @@ export default function ClaimReward() {
 
         {isSearchResult == true && data.campaign &&
             <section className="w-[100%] text-lg mb-[2rem] p-[1rem] bg-white drop-shadow-xl">
-                <p className='text-xl font-semibold text-green-600 my-4 text-center'>
-                    This voucher is available. Click the button below to claim it.
+                <p className='text-xl font-semibold text-green-600 mt-4 mb-8 text-center'>
+                    This voucher is available. Click the button below to Claim Reward it.
                 </p>
                 <div className='flex items-start justify-start gap-4 mb-2'>
                     <div className='w-[20%]'>Status:</div>
                     <div className='w-[80%]'>
-                        <span className={`${data.status == 'Generated' && 'bg-green-700'} ${data.status == 'Used' && 'bg-blue-700'} text-white px-2 py-1 rounded-lg`}>
+                        <span className={`bg-green-700 text-white px-2 py-1 rounded-lg`}>
                             {data.status}
                         </span>
                     </div>      
@@ -184,6 +191,28 @@ export default function ClaimReward() {
                 <div className='flex items-start justify-start gap-4 mb-2'>
                     <div className='w-[20%]'>Target Points:</div>
                     <div className='w-[80%] font-semibold'>{data.campaign.reward_points}</div>      
+                </div>
+                <div className='my-4'>
+                    <hr className="border-bottom border-slate-200" />  
+                </div>
+                <div className='flex items-start justify-start gap-4 mb-2'>
+                    <div className='w-[20%]'>Reciever Name:</div>
+                    <div className='w-[80%] font-semibold'>{data.user?.name}</div>      
+                </div>
+                <div className='flex items-start justify-start gap-4 mb-2'>
+                    <div className='w-[20%]'>Reciever ID Number:</div>
+                    <div className='w-[80%] font-semibold'>{data.user?.id_number}</div>      
+                </div>
+                <div className='flex items-start justify-start gap-4 mb-2'>
+                    <div className='w-[20%]'>Reciever Phone:</div>
+                    <div className='w-[80%] font-semibold'>{data.user?.phone}</div>      
+                </div>
+                <div className='flex items-start justify-start gap-4 mb-2'>
+                    <div className='w-[20%]'>Reciever Email:</div>
+                    <div className='w-[80%] font-semibold'>{data.user?.email}</div>      
+                </div>
+                <div className='my-4'>
+                    <hr className="border-bottom border-slate-200" />  
                 </div>
                 <div className='flex items-start justify-start gap-4 mb-2'>
                     <div className='w-[20%]'>Start Date:</div>

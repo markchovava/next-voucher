@@ -1,0 +1,2 @@
+RedeemVoucher - generated when user reach target
+Claim Voucher - this is the generated when user claim the redeem voucher

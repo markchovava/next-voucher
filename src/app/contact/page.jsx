@@ -2,6 +2,8 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ContactView from './components/ContactView';
+import Link from 'next/link';
+import { BsChevronRight } from 'react-icons/bs';
 
 
 

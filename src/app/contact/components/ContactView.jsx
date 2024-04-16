@@ -1,5 +1,4 @@
 "use client";
-import Link from 'next/link';
 import { BsArrowRight, BsChevronRight } from 'react-icons/bs';
 
 
