@@ -169,7 +169,7 @@ export default function CampaignList() {
                       {item?.company_name ? item?.company_name : 'Company not added.'}
                     </div>
                     <div className="w-[15%] p-3 border-l border-slate-300">
-                      {`${item.start_date} to ${item.end_date}`}</div>
+                      {`${item.start_date ? item.start_date : 'Not yet added.'} to ${item.end_date ? item.end_date : 'Not yet added.'}`}</div>
                     <div className="w-[20%] p-3 border-l border-slate-300">{item.reward_name}</div>
                     <div className="w-[15%] p-3 border-l border-slate-300">{item.reward_points} points</div>
                     <div className="w-[10%] p-3 border-l border-slate-300">

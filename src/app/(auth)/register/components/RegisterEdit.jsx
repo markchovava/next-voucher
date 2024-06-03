@@ -1,7 +1,5 @@
 "use client"
 import { baseURL } from "@/api/baseURL";
-import { tokenAuth } from "@/api/tokenAuth";
-import { tokenRole } from "@/api/tokenRole";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,70 +7,159 @@ import { useEffect, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { CiSquareRemove } from "react-icons/ci";
 
+/* Toast */
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 export default function RegisterEdit() {
     const router = useRouter();
     const [data, setData] = useState({});
-    const [errorMsg, setErrorMsg] = useState('');
+    const [errorMsg, setErrorMsg] = useState({});
     const [isError, setIsError] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
-    const [isClick, setIsClick] = useState(false);
-    const { setAuthToken } = tokenAuth()
-    const { setRoleToken } = tokenRole();
+
 
     const handleInput = (e) => {
       setData({...data, [e.target.name]: e.target.value})
     }
 
     async function postData() {
-      setIsSubmit(false)
-      console.log(data)
-      if(!data.email && data.email.trim().length <= 0){
-        setErrorMsg('Email is required.');
-        setIsError(true);
-        setIsClick(false);
+      if(!data.email){
+        let message = 'Email is required.';
+        setErrorMsg({email: message });
+        setIsSubmit(false);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+          });
         return;
       }
-      if(!data.password && data.password.trim().length <= 0){
-        setErrorMsg('Password is required.');
-        setIsError(true);
-        setIsClick(false);
+      if(!data.phone){
+        let message = 'Phone Number is required.';
+        setErrorMsg({phone: message});
+        setIsSubmit(false);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+          });
+      }
+      if(!data.password){
+        let message = 'Password is required.';
+        setErrorMsg({password: message})
+        setIsSubmit(false);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+          });
         return;
       }
       if(data.password !== data.password_confirmation){
-        setErrorMsg('Password does not match.');
-        setIsError(true);
-        setIsClick(false);
+        let message = 'Password does not match.';
+        setErrorMsg({password_confirmation: message});
+        setIsSubmit(false);
+        toast.success(message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+          });
         return;
+      }
+
+      const formData = {
+        password: data.password,
+        email: data.email,
+        phone: data.phone,
       }
       
       if(Object.keys(data).length > 0){
         try{ 
-            const result = await axios.post(`${baseURL}register`, data)
+            const result = await axios.post(`${baseURL}register`, formData)
             .then((response) => {
-              if(response.data.message){
-                alert(response.data.message);
-                setIsClick(false);
-                router.push('/login')
-              }
-              if(response.data.error){
-                setErrorMsg(response.data.error)
-                setIsError(true)
-                setIsClick(false);
+              if(response.data.status == 0){
+                setErrorMsg({email: response.data.message})
+                setIsSubmit(false)
+                toast.warn(response.data.message, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  transition: Bounce,
+                  });
                 return;
               }
+              if(response.data.status == 2){
+                setErrorMsg({phone: response.data.message})
+                setIsSubmit(false)
+                toast.warn(response.data.message, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  transition: Bounce,
+                  });
+                return;
+              }
+              if(response.data.status == 1){
+                setIsSubmit(false)
+                router.push('/login')
+                toast.success(response.data.message, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  transition: Bounce,
+                  });
+                setErrorMsg({});
+                return;
+              }
+
                 
             })
           } catch (error) {
             console.error(`Error: ${error}`)
           } 
-      } else{
-        setErrorMsg('All input fields are required to be filled.');
-        setIsError(true);
-        setIsClick(false);
-      }
+      } 
      
     }  
 
@@ -93,12 +180,7 @@ export default function RegisterEdit() {
             Login 
             <Link className='underline hover:text-purple-900' href='/login'>here.</Link>
           </h6>
-          {isError == true && 
-            <p className='pb-[2rem] text-md text-red-500 flex items-center gap-4 justify-between'>
-              {errorMsg}
-              <CiSquareRemove onClick={() => setIsError(false)} />
-            </p>
-          }
+          
       </div>
       <div className="w-[100%] mb-[2rem]">
           <input 
@@ -107,6 +189,20 @@ export default function RegisterEdit() {
               onChange={handleInput}
               placeholder="Write your Email..." 
               className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-purple-300" />
+          {errorMsg.email &&
+            <p className="text-red-500">{errorMsg.email}</p>
+          }
+      </div>
+      <div className="w-[100%] mb-[2rem]">
+          <input 
+              type="text" 
+              name="phone" 
+              onChange={handleInput}
+              placeholder="Write your Phone Number..." 
+              className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-purple-300" />
+          {errorMsg.phone &&
+            <p className="text-red-500">{errorMsg.phone}</p>
+          }
       </div>
       <div className="w-[100%] mb-[2rem]">
           <input 
@@ -115,6 +211,9 @@ export default function RegisterEdit() {
               onChange={handleInput}
               placeholder="Enter Password here..." 
               className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-purple-300" />
+          {errorMsg.password &&
+            <p className="text-red-500">{errorMsg.password}</p>
+          }
       </div>
       <div className="w-[100%] mb-[2rem]">
           <input 
@@ -123,16 +222,18 @@ export default function RegisterEdit() {
               onChange={handleInput}
               placeholder="Enter Password Confirmation here..." 
               className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-purple-300" />
+          {errorMsg.password_confirmation &&
+            <p className="text-red-500">{errorMsg.password_confirmation}</p>
+          }
       </div>
      {/*  */}
      <div className="w-[100%] mb-[2rem] flex items-center justify-center gap-4">
-        <button disabled={isClick == true && true}
+        <button 
           onClick={() => {
             setIsSubmit(true);
-            setIsClick(true);
           }}
           className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1.2rem] px-[2rem] bg-[#6c0868] text-white border hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-purple-900'>
-            { isClick == true ? 
+            { isSubmit == true ? 
             'Processing' : 
             <> 
               Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />

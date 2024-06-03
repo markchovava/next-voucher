@@ -43,16 +43,16 @@ export default function CampaignAdd() {
    
     /* POST DATA */
     async function postData() {
-        setIsSubmit(false);
+        
         const formData = {
           name: data.name,
           description: data.description,
-          start_date: `${data.start_day}/${data.start_month}/${data.start_year}`,
-          end_date: `${data.end_day}/${data.end_month}/${data.end_year}`,
+          start_date: data.start_day,
+          end_date: data.end_day,
           vouchers_quantity: Number(data.vouchers_quantity),
           points_per_voucher: Number(data.points_per_voucher),
-          price_of_voucher: Number(data.price_of_voucher),
-          total_cost: Number(calculateTotal() * 100),
+          price_of_voucher: Number(data.price_of_voucher) * 100,
+          total_cost: Number(calculateTotal()),
           /* REWARD */
           reward_name: data.reward_name,
           reward_points: data.reward_points,
@@ -64,7 +64,9 @@ export default function CampaignAdd() {
           company_website: data.company_website,
         };
         console.log(formData)
-        try{
+        setIsClicked(false);
+        setIsSubmit(false);
+        /* try{
           const result = await axiosClientAPI.post(`campaign`, formData, config)
             .then((response) => {
               router.push('/campaign')
@@ -73,7 +75,7 @@ export default function CampaignAdd() {
           } catch (error) {
             console.error(`Error: ${error}`)
             setIsClicked(false);
-        }
+        } */
     }  
 
     const calculateTotal = () => {
@@ -87,7 +89,7 @@ export default function CampaignAdd() {
     }, []);
 
     useEffect(() => { 
-        isSubmit && postData();
+        isSubmit == true && postData();
     }, [isSubmit]);
   
 
@@ -206,70 +208,36 @@ export default function CampaignAdd() {
                 <div className="w-[100%] lg:w-[50%] mb-[2rem]">
                     <h6 className='font-bold pb-1'>Start Date:</h6>
                     <div className="flex items-center justify-start gap-4">
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Day:</h6>
+                    <div className="w-[100%]">
+                        {/* <h6 className='pb-1'>Day:</h6> */}
                         <input 
-                            type="number" 
+                            type="date" 
                             name="start_day" 
                             onChange={handleInput}
                             placeholder="DD" 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Month:</h6>
-                        <input 
-                            type="number" 
-                            name="start_month"  
-                            onChange={handleInput}
-                            placeholder="MM" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Year:</h6>
-                        <input 
-                            type="number" 
-                            name="start_year"  
-                            onChange={handleInput}
-                            placeholder="YYYY" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
+                   
                     </div>
                 </div>  
                 <div className="w-[100%] lg:w-[50%] mb-[2rem]">
                     <h6 className='font-bold pb-1'>End Date:</h6>
                     <div className="flex items-center justify-start gap-4">
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Day:</h6>
+                    <div className="w-[100%]">
+                        {/* <h6 className='pb-1'>Day:</h6> */}
                         <input 
-                            type="number" 
+                            type="date" 
                             name="end_day" 
                             onChange={handleInput}
                             placeholder="DD" 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Month:</h6>
-                        <input 
-                            type="number" 
-                            name="end_month"  
-                            onChange={handleInput}
-                            placeholder="MM" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Year:</h6>
-                        <input 
-                            type="number" 
-                            name="end_year"  
-                            onChange={handleInput}
-                            placeholder="YYYY" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
+                    
                     </div>
                 </div>  
             </section>
             <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Price of Voucher (cents):</h6>
+                <h6 className='font-bold pb-1'>Price of Voucher:</h6>
                 <input 
                     type="number" 
                     name="price_of_voucher" 

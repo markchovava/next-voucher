@@ -214,7 +214,7 @@ export default function CampaignView({ id }) {
         <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">
             <label className='w-[20%] gap-3 font-semibold'>Price of Voucher:</label>
             <div className='w-[80%] '>
-                {data.price_of_voucher ? '$' + (data.price_of_voucher / 100).toFixed(2) : (0).toFixed(2)}
+                {data.price_of_voucher ? '$' + (data.price_of_voucher).toFixed(2) : (0).toFixed(2)}
             </div>
         </div>
         <div className="w-[100%] mb-[1.6rem] flex items-center justify-start">

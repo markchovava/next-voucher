@@ -4,7 +4,9 @@ import { tokenAuth } from "@/api/tokenAuth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
-
+/* Toast */
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function UserAdd() {
@@ -13,7 +15,7 @@ export default function UserAdd() {
   const [data, setData] = useState({});
   const [roles, setRoles] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  const [errMsg, setErrMsg] = useState({});
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -37,27 +39,108 @@ export default function UserAdd() {
 
   /* POST DATA */
   async function postData() {
-    setIsSubmit(false);
+    if(!data.phone){
+      const message = 'Phone Number required.';
+      setErrMsg({phone: message});
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+      setIsSubmit(false);
+      return;
+    }
+    if(!data.email){
+      const message = 'Email is required.';
+      setErrMsg({email: message});
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+      setIsSubmit(false);
+      return;
+    }
     const formData = {
       name: data.name,
       phone: data.phone,
       email: data.email,
       address: data.address,
-      dob: `${data.day && data.month && data.year ? data.day + '/' + data.month + '/' + data.year : ''}`,
-      id_number: data.id_number,
+      dob: data.dob,
       gender: data.gender,
       role_level: data.role_level,
     }
-    console.log(formData);
     try{
       const result = await axiosClientAPI.post(`user/`, formData, config)
         .then((response) => {
-          setIsClicked(false)
-          router.push('/admin/user')
+          if(response.data.status == 0){
+            const message = response.data.message;
+            setErrMsg({email: message});
+            toast.success(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Bounce,
+              });
+            setIsSubmit(false);
+            return;
+          }
+          if(response.data.status == 2){
+            const message = response.data.message;
+            setErrMsg({phone: message});
+            toast.success(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Bounce,
+              });
+            setIsSubmit(false);
+            return;
+          }
+          if(response.data.status == 1){
+            const message = response.data.message;
+            toast.success(message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Bounce,
+              });
+            setIsSubmit(false);
+            router.push('/admin/user');
+            return;
+          }
+
         })
       } catch (error) {
         console.error(`Error: ${error}`)
-        setIsClicked(false)
+        setIsSubmit(false);
       }
   }  
 
@@ -66,7 +149,7 @@ export default function UserAdd() {
   }, []);
 
   useEffect(() => { 
-    isSubmit && postData();
+    isSubmit == true && postData();
   }, [isSubmit]);
 
   return (
@@ -95,6 +178,9 @@ export default function UserAdd() {
                 onChange={handleInput}
                 placeholder="Write your Phone here..." 
                 className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
+            {errMsg.phone &&
+              <p className="text-red-500">{errMsg.phone}</p>
+            }
         </div>
         <div className="w-[100%] mb-[2rem]">
             <h6 className='font-bold pb-1'>Address:</h6>
@@ -113,46 +199,22 @@ export default function UserAdd() {
                 onChange={handleInput}
                 placeholder="Write your Email here..." 
                 className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
+            {errMsg.email &&
+              <p className="text-red-500">{errMsg.email}</p>
+            }
         </div>
         <div className="w-[100%] mb-[2rem]">
-            <h6 className='font-bold pb-1'>ID Number:</h6>
-            <input 
-                type="text" 
-                name="id_number" 
-                onChange={handleInput}
-                placeholder="Write your ID Number here..." 
-                className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-        </div>
-        <div className="w-[100%] lg:w-[50%] mb-[2rem]">
             <h6 className='font-bold pb-1'>Date of Birth:</h6>
             <div className="flex items-center justify-start gap-4">
-              <div className="w-[50%]">
-                <h6 className='pb-1'>Day:</h6>
+              <div className="w-[100%]">
                 <input 
-                    type="number" 
-                    name="day" 
+                    type="date" 
+                    name="dob" 
                     onChange={handleInput}
-                    placeholder="DD" 
+                    placeholder="MM/DD/YYYY" 
                     className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
               </div>
-              <div className="w-[50%]">
-                <h6 className='pb-1'>Month:</h6>
-                <input 
-                    type="number" 
-                    name="month"  
-                    onChange={handleInput}
-                    placeholder="MM" 
-                    className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-              </div>
-              <div className="w-[50%]">
-                <h6 className='pb-1'>Year:</h6>
-                <input 
-                    type="number" 
-                    name="year"  
-                    onChange={handleInput}
-                    placeholder="YYYY" 
-                    className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-              </div>
+             
             </div>
         </div>    
         <div className="w-[100%] mb-[2rem]">
@@ -167,7 +229,7 @@ export default function UserAdd() {
                 <option value='Female'>Female</option>
             </select>
         </div>
-        { roles.length > 0 &&
+        { roles?.length > 0 &&
           <div className="w-[100%] mb-[2rem]">
               <h6 className='font-bold pb-1'>Role Level:</h6>
               <select
@@ -188,11 +250,9 @@ export default function UserAdd() {
               <button 
                   onClick={ () => {
                     setIsSubmit(true) 
-                    setIsClicked(true)
                   }}
-                  disabled={isClicked == true ? true : false}
                   className='lg:w-[20%] group transition ease-in-out duration-200  flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] bg-blue-600 text-white border hover:bg-gradient-to-br  hover:from-blue-600 hover:to-blue-800'>
-                  {isClicked === true ? 'Processing' : 
+                  {setIsSubmit == true ? 'Processing' : 
                     <>
                       Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />
                     </>}

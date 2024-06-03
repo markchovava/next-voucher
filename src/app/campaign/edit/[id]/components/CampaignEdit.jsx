@@ -36,14 +36,10 @@ export default function CampaignEdit({ id }) {
           const result = await axiosClientAPI.get(`campaign/${id}`, config)
             .then((response) => {
                 setData(response.data.data);
-                const start_date = response.data.data.start_date.split('/')
-                const end_date = response.data.data.end_date.split('/')
-                console.log('start_date')
-                console.log(start_date)
-                console.log('end_date')
-                console.log(end_date)
-                setStartDate({day: start_date[0], month: start_date[1], year: start_date[2]});
-                setEndDate({day: end_date[0], month: end_date[1], year: end_date[2]});
+                //const start_date = response.data.data.start_date.split('/')
+                //const end_date = response.data.data.end_date.split('/')
+                //setStartDate({day: start_date[0], month: start_date[1], year: start_date[2]});
+                //setEndDate({day: end_date[0], month: end_date[1], year: end_date[2]});
             })
           } catch (error) {
             console.error(`Error: ${error}`)
@@ -68,8 +64,8 @@ export default function CampaignEdit({ id }) {
         const formData = {
           name: data.name,
           description: data.description,
-          start_date: `${startDate.day}/${startDate.month}/${startDate.year}`,
-          end_date: `${endDate.day}/${endDate.month}/${endDate.year}`,
+          start_date: data.start_date,
+          end_date: data.end_date,
           vouchers_quantity: Number(data.vouchers_quantity),
           points_per_voucher: Number(data.points_per_voucher),
           total_cost: Number(calculateTotal() * 100),
@@ -246,36 +242,17 @@ export default function CampaignEdit({ id }) {
                 <div className="w-[100%] lg:w-[50%] mb-[2rem]">
                     <h6 className='font-bold pb-1'>Start Date:</h6>
                     <div className="flex items-center justify-start gap-4">
-                    <div className="w-[50%]">
+                    <div className="w-[100%]">
                         <h6 className='pb-1'>Day:</h6>
                         <input 
-                            type="number" 
-                            name="start_day" 
-                            value={startDate.day}
-                            onChange={(e) => setStartDate({...startDate, day: e.target.value})}
+                            type="date" 
+                            name="start_date" 
+                            value={data.start_date}
+                            onChange={(e) => setData({...data, start_date: e.target.value})}
                             placeholder="DD" 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Month:</h6>
-                        <input 
-                            type="number" 
-                            name="start_month"  
-                            value={startDate.month}
-                            onChange={(e) => setStartDate({...startDate, month: e.target.value})}
-                            placeholder="MM" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Year:</h6>
-                        <input 
-                            type="number" 
-                            name="start_year"  
-                            value={startDate.year}
-                            onChange={(e) => setStartDate({...startDate, year: e.target.value})}
-                            placeholder="YYYY" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
+                   
                     </div>
                 </div>  
                 <div className="w-[100%] lg:w-[50%] mb-[2rem]">
@@ -284,38 +261,19 @@ export default function CampaignEdit({ id }) {
                     <div className="w-[50%]">
                         <h6 className='pb-1'>Day:</h6>
                         <input 
-                            type="number" 
-                            name="end_day" 
-                            value={endDate.day}
-                            onChange={(e) => setEndDate({...endDate, day: e.target.value})}
+                            type="date" 
+                            name="end_date" 
+                            value={data.end_date}
+                            onChange={(e) => setData({...data, end_date: e.target.value})}
                             placeholder="DD" 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Month:</h6>
-                        <input 
-                            type="number" 
-                            name="end_month"  
-                            value={endDate.month}
-                            onChange={(e) => setEndDate({...endDate, month: e.target.value})}
-                            placeholder="MM" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
-                    <div className="w-[50%]">
-                        <h6 className='pb-1'>Year:</h6>
-                        <input 
-                            type="number" 
-                            name="end_year"  
-                            value={endDate.year}
-                            onChange={(e) => setEndDate({...endDate, year: e.target.value})}
-                            placeholder="YYYY" 
-                            className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-                    </div>
+                    
                     </div>
                 </div>  
             </section>
             <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Price of Voucher (cents):</h6>
+                <h6 className='font-bold pb-1'>Price of Voucher:</h6>
                 <input 
                     type="number" 
                     value={data.price_of_voucher}

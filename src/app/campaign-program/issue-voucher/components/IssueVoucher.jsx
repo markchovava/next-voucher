@@ -5,15 +5,19 @@ import { tokenAuth } from "@/api/tokenAuth";
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
+/* Toast */
+import { Bounce, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 
 export default function IssueVoucher() {
-    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
     const receipt_noRef = useRef(null);
     const amountRef = useRef(null);
     const campaign_idRef = useRef(null);
+    const [errMsg, setErrMsg] = useState({})
     const [data, setData] = useState({});
     const { getAuthToken } = tokenAuth();
     const [campaign, setCampaign] = useState();
@@ -44,22 +48,56 @@ export default function IssueVoucher() {
     }
     /* POST DATA */
     async function postData() {
+        if(!data.phone){
+            const message = 'Phone Number is required.';
+            setErrMsg({message:  message});
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
+            setIsSubmit(false);
+            return;
+        }
         const formData = {
-            email: data.email,
+            phone: data.phone,
             receipt_no: data.receipt_no,
-            amount: Number(data.amount),
+            amount: Number(data.amount) * 100,
             campaign_id: Number(data.campaign_id),
         };
 
         try{
             const result = await axiosClientAPI.post(`program/store-by-amount`, formData, config)
             .then((response) => {
+                if(response.data.status == 0){
+                    const message = response.data.message;
+                    setErrMsg({message: message});
+                    toast.success(message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                        transition: Bounce,
+                    });
+                    setIsSubmit(false);
+                    return;
+                }
                 setMessage(response.data.message);
-                emailRef.current.value = '';
+                phoneRef.current.value = '';
                 receipt_noRef.current.value = '';
                 amountRef.current.value = '';
                 campaign_idRef.current.value = '';
-                setData({ email:'', receipt_no: '',amount: null,campaign_id: ''});
+                setData({ phone:'', receipt_no: '',amount: null,campaign_id: ''});
                 setIsSubmit(false);
                 setIsMsg(true);
             })
@@ -73,13 +111,13 @@ export default function IssueVoucher() {
         campaignData();
     }, []);
 
-   /*  useEffect(() => {
-        isSearch == true && searchData();
-    },[isSearch]); */
-
     /* useEffect(() => {
+        isSearch == true && searchData();
+    },[isSearch]);  */
+
+    useEffect(() => {
         isSubmit == true && postData();
-    },[isSubmit]) */
+    },[isSubmit])
 
 
     if(!campaign){
@@ -112,20 +150,26 @@ export default function IssueVoucher() {
                         className='px-[2rem] py-[1rem] rounded-xl text-white bg-gradient-to-br from-[#6c0868] to-purple-800 hover:bg-gradient-to-br hover:from-purple-800 hover:to-[#6c0868] transition ease-in-out duration-200'>
                         My Campaigns
                     </Link>        
-                </div>    
+                </div> 
+
             </div>
+                {errMsg.message && 
+                    <div className="text-red-600 text-lg flex items-center justify-center">
+                        {errMsg.message}
+                    </div>
+                }   
             <div className="w-[100%] mb-[2rem] bg-white drop-shadow-lg p-[2rem]">
-                {/* EMAIL */}
+                {/* Phone */}
                 <div>
-                    <h6 className='font-bold pb-1 text-lg'>Email:</h6>
+                    <h6 className='font-bold pb-1 text-lg'>Phone:</h6>
                     <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[2rem]'>
                         <input 
-                            type="email"
-                            name="email"
-                            ref={emailRef} 
-                            value={data?.email}
+                            type="phone"
+                            name="phone"
+                            ref={phoneRef} 
+                            value={data?.phone}
                             onChange={handleInput} 
-                            placeholder="Write your Email here..." 
+                            placeholder="Write your Phone here..." 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     
                     </div>
@@ -147,7 +191,7 @@ export default function IssueVoucher() {
                 </div>
                 {/* Amount (in cents) */}
                 <div>
-                    <h6 className='font-bold pb-1 text-lg'>Amount (in cents):</h6>
+                    <h6 className='font-bold pb-1 text-lg'>Amount:</h6>
                     <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[2rem]'>
                         <input 
                             type="number" 
