@@ -79,7 +79,7 @@ export default function CampaignView({ id }) {
     }, [])
 
     useEffect(() => {
-        isGenerate === true && generateVouchers();
+        isGenerate === true && generateVoucher();
     }, [isGenerate]);
 
 

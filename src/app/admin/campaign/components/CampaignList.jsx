@@ -13,7 +13,7 @@ import { TbProgress } from "react-icons/tb";
 
 export default function CampaignList() {
     const {getAuthToken} = tokenAuth();
-    const [data, setData] = useState({});
+    const [data, setData] = useState();
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     const [search, setSearch] = useState('');
@@ -107,6 +107,8 @@ export default function CampaignList() {
     useEffect(() => { 
         getData();
     }, []);
+
+    if(!data){ return ( <Loader />)}
 
   return (
       

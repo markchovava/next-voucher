@@ -23,7 +23,7 @@ export default function Footer() {
         <div className="w-[90%] mx-auto py-[4rem] flex lg:flex-row flex-col lg:gap-1 gap-4 items-start justify-between">
             <div className="lg:w-[40%] w-[100%] h-auto flex items-start justify-center flex-col gap-4">
                 {/* <img src=''className="object-fill" alt="" /> */}
-                <h1 className="leading-none font-black text-6xl py-3">RoyalVoucher</h1>
+                <h1 className="leading-none font-black text-6xl py-3">Royals</h1>
                 <ul className='flex items-center justify-start gap-3 text-2xl'>
                     <li><Link href='#' ><FaFacebook className="hover:scale-110 transition-all ease-in-out" /></Link></li>
                     <li><Link href='#'><FaSquareXTwitter className="hover:scale-110 transition-all ease-in-out" /></Link></li>

@@ -176,7 +176,7 @@ export default function IssueVoucher() {
                 </div>
                 {/* AMOUNT */}
                 <div>
-                    <h6 className='font-bold pb-1 text-lg'>Receipt No.:</h6>
+                    <h6 className='font-bold pb-1 text-lg'>Receipt No. (Optional):</h6>
                     <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[2rem]'>
                         <input 
                             type="text" 
@@ -198,7 +198,7 @@ export default function IssueVoucher() {
                             name="amount" 
                             ref={amountRef} 
                             onChange={handleInput}
-                            placeholder="Write Amount in Cents here..." 
+                            placeholder="Write Amount here..." 
                             className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
                     
                     </div>
@@ -206,7 +206,7 @@ export default function IssueVoucher() {
                 {/* Campaign */}
                 {campaign.length > 0 &&
                     <div>
-                        <h6 className='font-bold pb-1 text-lg'>Campaign</h6>
+                        <h6 className='font-bold pb-1 text-lg'>Campaign:</h6>
                         <div className='flex lg:flex-row flex-col items-center justify-start gap-5 mb-[2rem]'>
                             <select  
                                 name="campaign_id" 

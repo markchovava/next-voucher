@@ -6,13 +6,16 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { BsArrowRight } from 'react-icons/bs';
+import { Bounce, toast } from 'react-toastify';
 
 
 
 
 export default function CampaignAdd() {
     const router = useRouter();
-    const [data, setData] = useState({}) 
+    const [data, setData] = useState({
+        points_per_voucher: 1,
+    }) 
     const [isSubmit, setIsSubmit] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [price, setPrice] = useState({});
@@ -63,19 +66,31 @@ export default function CampaignAdd() {
           company_email : data.company_email,
           company_website: data.company_website,
         };
-        console.log(formData)
+        //console.log('formData')
+        //console.log(formData)
         setIsClicked(false);
         setIsSubmit(false);
-        /* try{
+        try{
           const result = await axiosClientAPI.post(`campaign`, formData, config)
-            .then((response) => {
-              router.push('/campaign')
+            .then((response) => { 
+              toast.success(response.data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+                });
               setIsClicked(false);
+              router.push('/campaign')
             })
           } catch (error) {
             console.error(`Error: ${error}`)
             setIsClicked(false);
-        } */
+        }
     }  
 
     const calculateTotal = () => {
@@ -144,13 +159,37 @@ export default function CampaignAdd() {
                     className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
             </div>
             <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Company Website:</h6>
+                <h6 className='font-bold pb-1'>Company Website (optional):</h6>
                 <input 
                     type="text" 
                     name="company_website" 
                     onChange={handleInput}
                     placeholder="Write your Company Website here..." 
                     className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
+            </div>
+        </section>
+
+        {/* Campaign Info */}
+        <section className='mx-auto w-[90%] lg:overflow-hidden overflow-auto pt-[2rem] px-[1.5rem]  mb-[4rem] bg-white drop-shadow-lg'>
+            <div className="w-[100%] mb-[2rem] text-5xl font-light flex items-center justify-start">
+                Campaign Info
+            </div>
+            <div className="w-[100%] mb-[2rem]">
+                <h6 className='font-bold pb-1'>Name:</h6>
+                <input 
+                    type="text" 
+                    name="name" 
+                    onChange={handleInput}
+                    placeholder="Write your Name here..." 
+                    className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
+            </div>
+            <div className="w-[100%] mb-[2rem]">
+                <h6 className='font-bold pb-1'>Description:</h6>
+                <textarea
+                    name="description" 
+                    onChange={handleInput}
+                    placeholder="Write your Description here..." 
+                    className="w-[100%] h-[8rem] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300"></textarea>
             </div>
         </section>
 
@@ -174,35 +213,12 @@ export default function CampaignAdd() {
                     type="text" 
                     name="reward_points" 
                     onChange={handleInput}
-                    placeholder="Write your Company Website here..." 
+                    placeholder="Enter the points required to obtain this reward..." 
                     className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
             </div>
         </section>
 
-        {/* Campaign Info */}
-        <section className='mx-auto w-[90%] lg:overflow-hidden overflow-auto pt-[2rem] px-[1.5rem]  mb-[4rem] bg-white drop-shadow-lg'>
-            <div className="w-[100%] mb-[2rem] text-5xl font-light flex items-center justify-start">
-                Campaign Info
-            </div>
-
-            <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Name:</h6>
-                <input 
-                    type="text" 
-                    name="name" 
-                    onChange={handleInput}
-                    placeholder="Write your Name here..." 
-                    className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
-            </div>
-            <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Description:</h6>
-                <textarea
-                    name="description" 
-                    onChange={handleInput}
-                    placeholder="Write your Description here..." 
-                    className="w-[100%] h-[8rem] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300"></textarea>
-            </div>
-        </section>
+        {/*  */}
         <section className='mx-auto w-[90%] lg:overflow-hidden overflow-auto py-[2rem] px-[1.5rem]  mb-[4rem] bg-white drop-shadow-lg'> 
             <section className='flex lg:flex-row flex-col items-center justify-start gap-5 lg:gap-8'>
                 <div className="w-[100%] lg:w-[50%] mb-[2rem]">
@@ -237,7 +253,12 @@ export default function CampaignAdd() {
                 </div>  
             </section>
             <div className="w-[100%] mb-[2rem]">
-                <h6 className='font-bold pb-1'>Price of Voucher:</h6>
+                <h6 className='font-bold pb-1'>
+                    Minimum Spend Amount: 
+                    <small className='ml-2 text-green-700 italic font-normal'>
+                        Enter the minimum amount a customer is required to spend to get a voucher.
+                    </small>
+                </h6>
                 <input 
                     type="number" 
                     name="price_of_voucher" 
@@ -260,7 +281,8 @@ export default function CampaignAdd() {
                     <h6 className='font-bold pb-1'>Points Per Voucher:</h6>
                     <input 
                         type="number" 
-                        name="points_per_voucher"  
+                        name="points_per_voucher" 
+                        value={data.points_per_voucher} 
                         onChange={handleInput}
                         placeholder="00" 
                         className="w-[100%] rounded-xl px-[1rem] py-[1rem] outline-none border border-slate-300" />
@@ -288,7 +310,7 @@ export default function CampaignAdd() {
                     setIsClicked(true)
                   }}
                   disabled={isClicked == true ? true : false}
-                  className='lg:w-[20%] group transition ease-in-out duration-200 bg-[#6c0868] hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] flex items-center justify-center gap-1 rounded-xl py-[1rem] px-[2.5rem] text-white border'>
+                  className='lg:w-[20%] group transition ease-in-out duration-200 bg-[#6c0868] hover:bg-gradient-to-br  hover:from-[#6c0868] hover:to-[#3d003a] flex items-center justify-center gap-1 rounded-xl py-[1.5rem] px-[2.5rem] text-white border'>
                   {isClicked === true ? 'Processing' : 
                     <>
                       Submit <BsArrowRight className='transition ease-in-out duration-200 group-hover:translate-x-1' />

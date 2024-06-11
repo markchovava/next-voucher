@@ -16,7 +16,7 @@ import useSWR from 'swr';
 
 export default function ProgramList() {
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState();
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
     const [search, setSearch] = useState('');
